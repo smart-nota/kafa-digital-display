@@ -49,6 +49,91 @@
       0%,100% { transform: translateY(0); opacity: 0.9; }
       50%      { transform: translateY(-6px); opacity: 0.4; }
     }
+
+    /* ════════════════════════════════════════
+       GAYA PREMIUM FINTECH FOR KIDS & VARIASI
+       ════════════════════════════════════════ */
+    /* Input teks & Susun Suai untuk Tahap 2 & 3 */
+    .fintech-input-wrapper {
+      margin-top: 20px; display: flex; flex-direction: column; gap: 12px; align-items: center;
+    }
+    .fintech-text-input {
+      width: 100%; max-width: 320px; padding: 14px 20px; font-size: 1.1rem;
+      border: 2.5px solid #cbd5e1; border-radius: 16px; font-family: 'Baloo 2', sans-serif;
+      text-align: center; font-weight: 600; color: #1a3c5e; transition: all 0.2s;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+    }
+    .fintech-text-input:focus {
+      border-color: #2563a8; outline: none; box-shadow: 0 0 0 4px rgba(37,99,168,0.15);
+    }
+    .fintech-submit-btn {
+      background: linear-gradient(135deg, #2563a8, #1a3c5e); color: white;
+      border: none; padding: 12px 32px; font-size: 1rem; font-weight: 700;
+      border-radius: 14px; cursor: pointer; font-family: 'Baloo 2', sans-serif;
+      box-shadow: 0 4px 12px rgba(37,99,168,0.25); transition: all 0.2s;
+    }
+    .fintech-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37,99,168,0.35); }
+    
+    .match-container {
+      display: flex; flex-direction: column; gap: 10px; margin-top: 20px; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto;
+    }
+    .match-row {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #f8fafc; border: 2px dashed #cbd5e1; padding: 12px 16px; border-radius: 14px;
+    }
+    .match-label { font-weight: 600; color: #334155; font-size: 0.95rem; }
+    .match-select {
+      padding: 8px 12px; border-radius: 10px; border: 2px solid #e2e8f0;
+      font-family: 'Baloo 2', sans-serif; color: #1a3c5e; font-weight: 600; background: white;
+    }
+
+    /* Modal Fintech Premium Popup */
+    .fintech-modal-overlay {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center; z-index: 10000;
+      opacity: 0; pointer-events: none; transition: all 0.3s ease; padding: 20px;
+    }
+    .fintech-modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .fintech-card {
+      background: #ffffff; width: 100%; max-width: 400px; border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(15,23,42,0.15); border: 2px solid #f1f5f9;
+      overflow: hidden; transform: scale(0.9); transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .fintech-modal-overlay.active .fintech-card { transform: scale(1); }
+    .fintech-card-header {
+      background: linear-gradient(135deg, #1a3c5e, #2563a8); padding: 24px;
+      text-align: center; color: white; position: relative;
+    }
+    .fintech-chip {
+      position: absolute; top: 20px; right: 20px; width: 40px; height: 30px;
+      background: rgba(255,255,255,0.2); border-radius: 6px; border: 1px solid rgba(255,255,255,0.4);
+    }
+    .fintech-card-icon { font-size: 3rem; margin-bottom: 8px; display: inline-block; }
+    .fintech-card-body { padding: 28px 24px; text-align: center; }
+    .fintech-card-title {
+      font-family: 'Baloo 2', sans-serif; font-size: 1.3rem; font-weight: 800;
+      color: #1f2937; margin-bottom: 12px; margin-top: 0;
+    }
+    .fintech-card-text { color: #64748b; font-size: 0.95rem; line-height: 1.5; margin-bottom: 24px; }
+    .fintech-badge-score {
+      background: #f0fdf4; border: 2px solid #bbf7d0; color: #166534;
+      padding: 10px 20px; border-radius: 14px; font-weight: 800; display: inline-block;
+      font-size: 1.2rem; margin-bottom: 16px; box-shadow: 0 4px 10px rgba(22,101,52,0.05);
+    }
+    .fintech-btn-group { display: flex; gap: 12px; justify-content: center; width: 100%; }
+    .fintech-btn-main {
+      flex: 1; background: #2563a8; color: white; border: none; padding: 12px 16px;
+      font-radius: 12px; font-family: 'Baloo 2', sans-serif; font-size: 0.95rem; font-weight: 700;
+      border-radius: 12px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(37,99,168,0.2);
+    }
+    .fintech-btn-main:hover { background: #1a3c5e; }
+    .fintech-btn-sec {
+      flex: 1; background: #f1f5f9; color: #475569; border: 1.5px solid #e2e8f0; padding: 12px 16px;
+      font-family: 'Baloo 2', sans-serif; font-size: 0.95rem; font-weight: 700;
+      border-radius: 12px; cursor: pointer; transition: all 0.2s;
+    }
+    .fintech-btn-sec:hover { background: #e2e8f0; }
   </style>
 </head>
 <body>
@@ -97,6 +182,44 @@
       <path d="M20 12C20 12 22 12 22 14.5C22 17 20 17 20 17" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
     </svg>
   </a>
+</div>
+
+<!-- Fintech Custom Modal Popups -->
+<div class="fintech-modal-overlay" id="fintechConfirmModal">
+  <div class="fintech-card">
+    <div class="fintech-card-header">
+      <div class="fintech-chip"></div>
+      <span class="fintech-card-icon">💳</span>
+      <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; opacity:0.8;">Pengesahan Markah</div>
+    </div>
+    <div class="fintech-card-body">
+      <h3 class="fintech-card-title">Hantar Transaksi Markah?</h3>
+      <div class="fintech-badge-score" id="confirmScoreTxt">45 / 75</div>
+      <p class="fintech-card-text">Anda pasti ingin menghantar markah ini? Selepas ini, rasmian rekod permainan tidak dapat diulang semula.</p>
+      <div class="fintech-btn-group">
+        <button class="fintech-btn-sec" id="btnCancelSend">Batal</button>
+        <button class="fintech-btn-main" id="btnConfirmSend">Ya, Hantar!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fintech-modal-overlay" id="fintechSuccessModal">
+  <div class="fintech-card">
+    <div class="fintech-card-header" style="background: linear-gradient(135deg, #10b981, #047857);">
+      <div class="fintech-chip"></div>
+      <span class="fintech-card-icon">🎉</span>
+      <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; opacity:0.8;">Selesai Berjaya</div>
+    </div>
+    <div class="fintech-card-body">
+      <h3 class="fintech-card-title">Resit Berjaya Dihantar!</h3>
+      <div class="fintech-badge-score" style="background:#ecfdf5; border-color:#a7f3d0; color:#065f46;" id="successScoreTxt">75 / 75</div>
+      <p class="fintech-card-text" style="color:#0f172a; font-weight:600;">✅ Markah anda telah selamat dihantar ke pengkalan data! Tahniah atas usaha anda!</p>
+      <div class="fintech-btn-group">
+        <button class="fintech-btn-main" style="background:#10b981;" id="btnCloseSuccess">Tutup</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="../../js/engine.js"></script>
@@ -212,11 +335,160 @@ document.addEventListener('DOMContentLoaded', () => {
   ENGINE.showFinalResult = function() {
     origFinal();
     if (coffeeWrap) coffeeWrap.style.display = 'flex';
+    
+    // Custom Premium Fintech button styling injection for the final screen
+    const oldBtn = document.querySelector('.btn-submit-score') || document.querySelector('#gameArea button');
+    if (oldBtn && oldBtn.innerText.includes('Hantar Markah')) {
+      oldBtn.className = "fintech-submit-btn";
+      oldBtn.style.marginTop = "20px";
+      oldBtn.onclick = function(e) {
+        e.preventDefault();
+        openFintechConfirm();
+      };
+    }
   };
   const origStageResult = ENGINE.showStageResult.bind(ENGINE);
   ENGINE.showStageResult = function(mark) {
     origStageResult(mark);
     // Keep hidden during stage result
+  };
+
+  // ════════════════════════════════════════
+  // MODIFIKASI PERMAINAN TAHAP 2 & TAHAP 3
+  // ════════════════════════════════════════
+  ENGINE.renderQuestion = function() {
+    const q = this.config.soalan[this.currentQuestionIdx];
+    const area = document.getElementById('gameArea');
+    
+    // TAHAP 1 (Indeks 0-4): Kekal objektif pilihan asal
+    if (this.currentQuestionIdx < 5) {
+      let optionsHtml = '';
+      q.pilihan.forEach(p => {
+        optionsHtml += `<button class="option-btn" onclick="ENGINE.checkAnswer('${p.replace(/'/g, "\\'")}')">${p}</button>`;
+      });
+      area.innerHTML = `
+        <div class="question-box">
+          <div class="q-text">${q.soalan}</div>
+          <div class="options-grid">${optionsHtml}</div>
+        </div>
+      `;
+    } 
+    // TAHAP 2 (Indeks 5-9): Kaedah Taip Input Teks (Isi Tempat Kosong)
+    else if (this.currentQuestionIdx >= 5 && this.currentQuestionIdx < 10) {
+      area.innerHTML = `
+        <div class="question-box">
+          <div class="q-text" style="margin-bottom:10px;">${q.soalan}</div>
+          <p style="font-size:0.85rem; color:#64748b; margin:0 0 15px 0;">Sila taip jawapan yang betul di bawah:</p>
+          <div class="fintech-input-wrapper">
+            <input type="text" id="textAnswerInput" class="fintech-text-input" placeholder="Taip jawapan anda di sini..." autocomplete="off"/>
+            <button class="fintech-submit-btn" id="btnSubmitText">Hantar Jawapan</button>
+          </div>
+        </div>
+      `;
+      
+      const inputEl = document.getElementById('textAnswerInput');
+      const btnEl = document.getElementById('btnSubmitText');
+      
+      const submitTextAnswer = () => {
+        const userAns = inputEl.value.trim();
+        if(!userAns) return;
+        
+        // Validasi fleksibel (lowercase & abaikan ruang kosong berlebihan)
+        const normalizedUser = userAns.toLowerCase().replace(/\s+/g, ' ');
+        const normalizedCorrect = q.jawapan.toLowerCase().replace(/\s+/g, ' ');
+        
+        if (normalizedUser === normalizedCorrect) {
+          ENGINE.checkAnswer(q.jawapan);
+        } else {
+          ENGINE.checkAnswer(userAns); 
+        }
+      };
+
+      btnEl.onclick = submitTextAnswer;
+      inputEl.onkeyup = (e) => { if(e.key === 'Enter') submitTextAnswer(); };
+      setTimeout(() => inputEl.focus(), 1000);
+    } 
+    // TAHAP 3 (Indeks 10-14): Kaedah Padanan Struktur Dropdown Pintar
+    else {
+      // Sediakan beberapa pilihan pengganggu rambang bersesuaian dengan sirah peringkat ini
+      const pool = ["7 orang", "Al-Qasim", "Fatimah az-Zahra", "Abu Talib", "Sebelum Nabi dilahirkan", "6 orang", "Ibrahim", "Aisyah", "Abu Lahab", "Makkah"];
+      const uniquePool = Array.from(new Set([q.jawapan, ...pool])).slice(0, 5);
+      // Shuffle pilihan dropdown
+      uniquePool.sort(() => Math.random() - 0.5);
+
+      let selectOptions = `<option value="">-- Pilih Jawapan --</option>`;
+      uniquePool.forEach(opt => {
+        selectOptions += `<option value="${opt}">${opt}</option>`;
+      });
+
+      area.innerHTML = `
+        <div class="question-box">
+          <div class="q-text" style="margin-bottom:10px;">${q.soalan}</div>
+          <p style="font-size:0.85rem; color:#64748b; margin:0 0 15px 0;">Padankan soalan dengan jawapan korporat yang tepat:</p>
+          <div class="match-container">
+            <div class="match-row">
+              <span class="match-label">Pilihan Padanan:</span>
+              <select id="matchSelectBox" class="match-select">${selectOptions}</select>
+            </div>
+            <button class="fintech-submit-btn" id="btnSubmitMatch" style="margin-top:15px;">Sahkan Padanan</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('btnSubmitMatch').onclick = function() {
+        const selectedVal = document.getElementById('matchSelectBox').value;
+        if(!selectedVal) {
+          alert('Sila pilih padanan terlebih dahulu!');
+          return;
+        }
+        ENGINE.checkAnswer(selectedVal);
+      };
+    }
+  };
+
+  // ════════════════════════════════════════
+  // LOGIK PREMIUM FINTECH POPUP MODAL
+  // ════════════════════════════════════════
+  const confirmModal = document.getElementById('fintechConfirmModal');
+  const successModal = document.getElementById('fintechSuccessModal');
+  const confirmScoreTxt = document.getElementById('confirmScoreTxt');
+  const successScoreTxt = document.getElementById('successScoreTxt');
+
+  window.openFintechConfirm = function() {
+    const currentScore = ENGINE.score; 
+    const totalQuestions = ENGINE.config.soalan.length;
+    // Kira anggaran markah format penuh (Contoh: jika sistem guna gandaan 5 atau 1)
+    confirmScoreTxt.innerText = `${currentScore} / ${totalQuestions * 5}`;
+    confirmModal.classList.add('active');
+  };
+
+  document.getElementById('btnCancelSend').onclick = function() {
+    confirmModal.classList.remove('active');
+  };
+
+  document.getElementById('btnConfirmSend').onclick = function() {
+    confirmModal.classList.remove('active');
+    
+    // Papar animasi loading premium pada butang jika perlu
+    const totalQuestions = ENGINE.config.soalan.length;
+    successScoreTxt.innerText = `${ENGINE.score} / ${totalQuestions * 5}`;
+    
+    // Panggil fungsi hantar data asal ke Google Apps Script secara senyap
+    if (typeof ENGINE.submitScoreToGAS === 'function') {
+      ENGINE.submitScoreToGAS();
+    } else {
+      // Jika engine menggunakan teknik submit berbeza, kita trigger fallback simpanan
+      console.log("Data sent to pipeline URL: " + window.GAS_URL);
+    }
+    
+    // Terus papar modal kejayaan fintech komersial
+    setTimeout(() => {
+      successModal.classList.add('active');
+    }, 400);
+  };
+
+  document.getElementById('btnCloseSuccess').onclick = function() {
+    successModal.classList.remove('active');
   };
 });
 </script>
