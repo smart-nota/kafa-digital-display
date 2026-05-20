@@ -11,7 +11,7 @@
 
   <style>
   /* ════════════════════════════════════════════
-      RESET & VARIABLES (Combined)
+      RESET & VARIABLES
   ════════════════════════════════════════════ */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -144,7 +144,7 @@
   }
 
   /* ════════════════════════════════════════════
-      LOGIN SCREEN (Name Only)
+      LOGIN SCREEN (Nama Sahaja)
   ════════════════════════════════════════════ */
   #loginScreen {
     align-items: center; justify-content: center;
@@ -194,7 +194,7 @@
   .btn-masuk:hover { transform: translateY(-2px); box-shadow: 0 12px 38px var(--gold-glow); filter: brightness(1.06); }
 
   /* ════════════════════════════════════════════
-      GAMEPLAY SCREEN (From biodata-nabi.html)
+      GAMEPLAY SCREEN
   ════════════════════════════════════════════ */
   #gameplayScreen { max-width: 640px; margin: 0 auto; padding: 20px 16px 40px; }
   
@@ -270,7 +270,7 @@
   .sort-item.wrong-pos { border-color: var(--red) !important; background: var(--red-bg) !important; }
   .btn-semak { width: 100%; margin-top: 14px; padding: 14px; background: linear-gradient(135deg, var(--gold), var(--gold3)); border: none; border-radius: var(--radius-sm); font-family: var(--font-game); font-size: 15px; font-weight: 800; color: #06101f; cursor: pointer; box-shadow: var(--shadow-gold); }
 
-  /* Results Card inside gameplay */
+  /* Results Card */
   .result-card { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 40px 24px; text-align: center; position: relative; }
   .result-emoji { font-size: 60px; margin-bottom: 12px; display: block; }
   .result-title { font-family: var(--font-game); font-size: 1.6rem; font-weight: 900; margin-bottom: 6px; }
@@ -278,7 +278,6 @@
   .result-score span { font-size: 1.2rem; color: var(--txt3); }
   .result-msg { font-size: 14px; color: var(--txt2); margin-bottom: 20px; }
 
-  /* Shake Animation */
   @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
 
   /* ════════════════════════════════════════════
@@ -343,8 +342,7 @@
     </section>
 
     <section id="gameplayScreen" class="app-section">
-      <div id="gamePlayContainer">
-        </div>
+      <div id="gamePlayContainer"></div>
     </section>
 
     <section id="rankingSection" class="app-section">
@@ -352,8 +350,461 @@
         <h2>Carta <span>Kedudukan</span></h2>
         <p>Senarai markah tertinggi murid bagi Topik: Biodata Nabi Muhammad SAW</p>
       </div>
-      <div id="leaderboardTableBox">
-        </div>
+      <div id="leaderboardTableBox"></div>
     </section>
 
   </main>
+
+  <script>
+  // ── Database Soalan Biodata Nabi ──
+  const CONFIG = {
+    topikId: "biodata_nabi",
+    topikTajuk: "Biodata Nabi Muhammad SAW",
+    durasiMcq: 20, 
+    soalan: [
+      { id: 1, type: "mcq", stage: 1, question: "Di manakah tempat keputeraan Nabi Muhammad SAW?", options: ["Kota Makkah", "Kota Madinah", "Kota Taif", "Syam"], answer: "Kota Makkah" },
+      { id: 2, type: "mcq", stage: 1, question: "Siapakah nama bapa Nabi Muhammad SAW?", options: ["Abu Talib", "Abdul Mutalib", "Abdullah", "Abu Lahab"], answer: "Abdullah" },
+      { id: 3, type: "mcq", stage: 1, question: "Siapakah nama ibu susuan pertama Nabi Muhammad SAW selepas ibunya?", options: ["Halimatussa'diah", "Thuwaibah Al-Aslamiah", "Ummu Aiman", "Fatiman binti Asad"], answer: "Thuwaibah Al-Aslamiah" },
+      { id: 4, type: "mcq", stage: 1, question: "Nabi Muhammad SAW dilahirkan pada malam Isnin, bersamaan...", options: ["12 Rabiulawal", "10 Rabiulawal", "1 Ramadhan", "27 Rajab"], answer: "12 Rabiulawal" },
+      { id: 5, type: "mcq", stage: 1, question: "Apakah gelaran yang diberikan kepada Nabi Muhammad SAW kerana sifat amanah baginda?", options: ["Al-Amin", "As-Siddiq", "Al-Fatanah", "Al-Farooq"], answer: "Al-Amin" },
+      {
+        id: 6, type: "match", stage: 2, question: "Suaikan hubungan kekeluargaan Nabi Muhammad SAW dengan betul.",
+        pairs: [
+          { left: "Abdul Mutalib", right: "Datuk Baginda" },
+          { left: "Aminah binti Wahab", right: "Ibu Kandung Baginda" },
+          { left: "Abu Talib", right: "Bapa Saudara Baginda" },
+          { left: "Halimatussa'diah", right: "Ibu Susuan di perkampungan Saad" }
+        ]
+      },
+      {
+        id: 7, type: "sort", stage: 3, question: "Susun kronologi penjagaan Nabi Muhammad SAW daripada kecil hingga dewasa mengikut urutan yang betul.",
+        items: [
+          { id: "s1", text: "Dipelihara oleh ibu kandung (Aminah) & ibu susuan" },
+          { id: "s2", text: "Dijaga oleh datuk baginda, Abdul Mutalib selepas kematian ibu" },
+          { id: "s3", text: "Diasuh oleh bapa saudara baginda, Abu Talib" },
+          { id: "s4", text: "Keluar berniaga ke Syam bersama bapa saudara baginda" }
+        ],
+        correctOrder: ["s1", "s2", "s3", "s4"]
+      }
+    ]
+  };
+
+  let currentUser = null; 
+  let gameEngine = {
+    currentIndex: 0,
+    score: 0,
+    timer: null,
+    timeLeft: 0,
+    matchSelected: null,
+    matchPairs: [],
+    matchDoneCount: 0,
+    sortItems: [],
+
+    init() {
+      this.currentIndex = 0;
+      this.score = 0;
+      this.renderQuestion();
+    },
+
+    renderQuestion() {
+      clearInterval(this.timer);
+      const container = document.getElementById('gamePlayContainer');
+      if (this.currentIndex >= CONFIG.soalan.length) {
+        this.tamatPermainan();
+        return;
+      }
+
+      const q = CONFIG.soalan[this.currentIndex];
+      
+      let html = `
+        <div class="game-header-bar">
+          <div class="game-title-area">
+            <h3>${CONFIG.topikTajuk}</h3>
+            <p>Pemain: <b>${currentUser.nama}</b></p>
+          </div>
+          <div class="stage-indicator">
+            <div class="stage-dot ${q.stage===1?'active':(q.stage>1?'done':'')}">1</div>
+            <div class="stage-dot ${q.stage===2?'active':(q.stage>2?'done':'')}">2</div>
+            <div class="stage-dot ${q.stage===3?'active':(q.stage>3?'done':'')}">3</div>
+          </div>
+        </div>
+        
+        <div class="score-bar">
+          <div class="score-item"><span class="s-val">${this.currentIndex + 1} / ${CONFIG.soalan.length}</span><span class="s-label">Soalan</span></div>
+          <div class="score-divider"></div>
+          <div class="score-item"><span class="s-val" id="liveScore">${this.score}</span><span class="s-label">Markah</span></div>
+        </div>
+      `;
+
+      if (q.type === "mcq") {
+        html += this.buildMcq(q);
+        container.innerHTML = html;
+        this.startMcqTimer();
+      } else if (q.type === "match") {
+        html += this.buildMatch(q);
+        container.innerHTML = html;
+      } else if (q.type === "sort") {
+        html += this.buildSort(q);
+        container.innerHTML = html;
+        this.setupSortEvents();
+      }
+    },
+
+    buildMcq(q) {
+      let options = [...q.options];
+      options.sort(() => Math.random() - 0.5);
+
+      let optsHtml = options.map((opt, i) => {
+        let letter = String.fromCharCode(65 + i);
+        return `<button class="option-btn" onclick="gameEngine.checkMcq(this, '${opt.replace(/'/g, "\\'")}')">
+                  <span class="option-letter">${letter}</span> ${opt}
+                </button>`;
+      }).join('');
+
+      return `
+        <div class="timer-wrap">
+          <div class="timer-label"><span>Masa Menjawab</span><span class="time-left" id="timerBox">${CONFIG.durasiMcq}s</span></div>
+          <div class="timer-bar-bg"><div class="timer-bar-fill" id="timerBar"></div></div>
+        </div>
+        <div class="question-card">
+          <div class="q-meta"><span class="q-badge mcq">Tahap 1: MCQ</span></div>
+          <div class="q-text">${q.question}</div>
+        </div>
+        <div class="options-grid" id="mcqGrid">${optsHtml}</div>
+      `;
+    },
+
+    startMcqTimer() {
+      this.timeLeft = CONFIG.durasiMcq;
+      const tBox = document.getElementById('timerBox');
+      const tBar = document.getElementById('timerBar');
+      
+      this.timer = setInterval(() => {
+        this.timeLeft--;
+        if(tBox) tBox.innerText = this.timeLeft + "s";
+        if(tBar) tBar.style.width = (this.timeLeft / CONFIG.durasiMcq * 100) + "%";
+        
+        if (this.timeLeft <= 5 && tBox) tBox.classList.add('danger');
+
+        if (this.timeLeft <= 0) {
+          clearInterval(this.timer);
+          const btns = document.querySelectorAll('#mcqGrid button');
+          btns.forEach(b => b.disabled = true);
+          this.currentIndex++;
+          setTimeout(() => this.renderQuestion(), 1500);
+        }
+      }, 1000);
+    },
+
+    checkMcq(btn, chosen) {
+      clearInterval(this.timer);
+      const q = CONFIG.soalan[this.currentIndex];
+      const btns = document.querySelectorAll('#mcqGrid button');
+      btns.forEach(b => b.disabled = true);
+
+      if (chosen === q.answer) {
+        btn.classList.add('correct');
+        this.score += 10; 
+        document.getElementById('liveScore').innerText = this.score;
+      } else {
+        btn.classList.add('wrong');
+        btns.forEach(b => {
+          if(b.innerText.includes(q.answer)) b.classList.add('correct');
+        });
+      }
+
+      this.currentIndex++;
+      setTimeout(() => this.renderQuestion(), 1500);
+    },
+
+    buildMatch(q) {
+      this.matchSelected = null;
+      this.matchDoneCount = 0;
+      this.matchPairs = q.pairs;
+
+      let lefts = q.pairs.map(p => p.left).sort(() => Math.random() - 0.5);
+      let rights = q.pairs.map(p => p.right).sort(() => Math.random() - 0.5);
+
+      let leftHtml = lefts.map((txt, i) => `<div class="match-item" id="left_${i}" data-type="left" data-val="${txt.replace(/"/g,'&quot;')}" onclick="gameEngine.clickMatch(this)">${txt}</div>`).join('');
+      let rightHtml = rights.map((txt, i) => `<div class="match-item" id="right_${i}" data-type="right" data-val="${txt.replace(/"/g,'&quot;')}" onclick="gameEngine.clickMatch(this)">${txt}</div>`).join('');
+
+      return `
+        <div class="question-card">
+          <div class="q-meta"><span class="q-badge match">Tahap 2: Suaian</span></div>
+          <div class="q-text">${q.question}</div>
+          <p style="font-size:12px;color:var(--txt2)">💡 Klik pada item kiri, kemudian klik pasangannya di sebelah kanan.</p>
+        </div>
+        <div class="match-cols-wrap">
+          <div class="match-col">${leftHtml}</div>
+          <div class="match-col">${rightHtml}</div>
+        </div>
+      `;
+    },
+
+    clickMatch(el) {
+      if (el.classList.contains('matched-correct') || el.classList.contains('matched-wrong')) return;
+
+      if (!this.matchSelected) {
+        this.matchSelected = el;
+        el.classList.add('selected');
+      } else {
+        let el1 = this.matchSelected;
+        let el2 = el;
+
+        if (el1.id === el2.id) {
+          el1.classList.remove('selected');
+          this.matchSelected = null;
+          return;
+        }
+
+        if (el1.dataset.type === el2.dataset.type) {
+          el1.classList.remove('selected');
+          this.matchSelected = el;
+          el.classList.add('selected');
+          return;
+        }
+
+        let lVal = el1.dataset.type === 'left' ? el1.dataset.val : el2.dataset.val;
+        let rVal = el1.dataset.type === 'right' ? el1.dataset.val : el2.dataset.val;
+
+        let matchFound = this.matchPairs.find(p => p.left === lVal && p.right === rVal);
+
+        if (matchFound) {
+          el1.className = "match-item matched-correct";
+          el2.className = "match-item matched-correct";
+          this.score += 5; 
+          document.getElementById('liveScore').innerText = this.score;
+        } else {
+          el1.className = "match-item matched-wrong";
+          el2.className = "match-item matched-wrong";
+          let itemA = el1, itemB = el2;
+          setTimeout(() => {
+            itemA.className = "match-item";
+            itemB.className = "match-item";
+          }, 1000);
+        }
+
+        this.matchSelected = null;
+        this.matchDoneCount++;
+
+        if (this.matchDoneCount >= this.matchPairs.length) {
+          this.currentIndex++;
+          setTimeout(() => this.renderQuestion(), 1800);
+        }
+      }
+    },
+
+    buildSort(q) {
+      this.sortItems = [...q.items].sort(() => Math.random() - 0.5);
+
+      let itemsHtml = this.sortItems.map((item, index) => {
+        return `
+          <div class="sort-item" draggable="true" data-id="${item.id}" data-index="${index}">
+            <div class="sort-item-num">${index + 1}</div>
+            <div class="sort-item-text">${item.text}</div>
+          </div>
+        `;
+      }).join('');
+
+      return `
+        <div class="question-card">
+          <div class="q-meta"><span class="q-badge sort">Tahap 3: Susunan</span></div>
+          <div class="q-text">${q.question}</div>
+          <p style="font-size:12px;color:var(--txt2)">↕️ Heret dan susun baris mengikut kronologi dari atas ke bawah.</p>
+        </div>
+        <div class="sort-list" id="sortableList">${itemsHtml}</div>
+        <button class="btn-semak" id="btnSemakSort" onclick="gameEngine.checkSort()">Semak & Hantar Jawapan</button>
+      `;
+    },
+
+    setupSortEvents() {
+      const list = document.getElementById('sortableList');
+      if (!list) return;
+
+      let draggedEl = null;
+
+      list.addEventListener('dragstart', (e) => {
+        draggedEl = e.target.closest('.sort-item');
+        if (draggedEl) draggedEl.classList.add('dragging');
+      });
+
+      list.addEventListener('dragend', (e) => {
+        if (draggedEl) draggedEl.classList.remove('dragging');
+        const items = list.querySelectorAll('.sort-item');
+        items.forEach((item, idx) => {
+          item.querySelector('.sort-item-num').innerText = idx + 1;
+        });
+      });
+
+      list.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        const afterElement = getDragAfterElement(list, e.clientY);
+        if (afterElement == null) {
+          list.appendChild(draggedEl);
+        } else {
+          list.insertBefore(draggedEl, afterElement);
+        }
+      });
+
+      function getDragAfterElement(container, y) {
+        const draggableElements = [...container.querySelectorAll('.sort-item:not(.dragging)')];
+        return draggableElements.reduce((closest, child) => {
+          const box = child.getBoundingClientRect();
+          const offset = y - box.top - box.height / 2;
+          if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+          } else {
+            return closest;
+          }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+      }
+    },
+
+    checkSort() {
+      document.getElementById('btnSemakSort').disabled = true;
+      const q = CONFIG.soalan[this.currentIndex];
+      const items = document.querySelectorAll('#sortableList .sort-item');
+      
+      let userOrder = [];
+      items.forEach(item => {
+        userOrder.push(item.dataset.id);
+      });
+
+      userOrder.forEach((id, idx) => {
+        if (id === q.correctOrder[idx]) {
+          items[idx].classList.add('correct-pos');
+          this.score += 1.25; 
+        } else {
+          items[idx].classList.add('wrong-pos');
+        }
+      });
+
+      this.score = Math.round(this.score);
+      document.getElementById('liveScore').innerText = this.score;
+
+      this.currentIndex++;
+      setTimeout(() => this.renderQuestion(), 2000);
+    },
+
+    tamatPermainan() {
+      clearInterval(this.timer);
+      const hariIni = new Date().toLocaleDateString('ms-MY', {day:'numeric', month:'short', year:'numeric'});
+      let databaseRanking = JSON.parse(localStorage.getItem('kafa_ranking_records') || '[]');
+      
+      let rekodBaru = {
+        nama: currentUser.nama,
+        markah: this.score,
+        tarikh: hariIni
+      };
+
+      databaseRanking.push(rekodBaru);
+      localStorage.setItem('kafa_ranking_records', JSON.stringify(databaseRanking));
+
+      renderLeaderboard();
+
+      const container = document.getElementById('gamePlayContainer');
+      container.innerHTML = `
+        <div class="result-card">
+          <span class="result-emoji">🏆</span>
+          <div class="result-title">Syabas, Permainan Tamat!</div>
+          <div class="result-score">${this.score} <span>/ 75 Markah Penuh</span></div>
+          <p class="result-msg">Tahniah ${currentUser.nama}, markah anda berjaya disimpan.</p>
+          <div style="color:var(--gold3);font-size:13px;font-weight:600;margin-top:10px;">⚡ Membuka Carta Kedudukan Ranking dalam 3 saat...</div>
+        </div>
+      `;
+
+      setTimeout(() => {
+        showSection('rankingSection');
+      }, 3000);
+    }
+  };
+
+  function showSection(id) {
+    document.querySelectorAll('.app-section').forEach(sec => sec.classList.remove('active'));
+    const target = document.getElementById(id);
+    if(target) target.classList.add('active');
+  }
+
+  function login() {
+    const inputNama = document.getElementById('usernameInput').value.trim();
+    if (!inputNama) {
+      alert('Sila masukkan nama penuh anda!');
+      return;
+    }
+    currentUser = { nama: inputNama.toUpperCase() };
+    document.getElementById('logoutBtn').style.display = 'flex';
+    showSection('gameplayScreen');
+    gameEngine.init();
+  }
+
+  function logout() {
+    currentUser = null;
+    document.getElementById('usernameInput').value = '';
+    document.getElementById('logoutBtn').style.display = 'none';
+    showSection('loginScreen');
+  }
+
+  function renderLeaderboard() {
+    const container = document.getElementById('leaderboardTableBox');
+    let records = JSON.parse(localStorage.getItem('kafa_ranking_records') || '[]');
+
+    if (records.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <span>📊</span>
+          <p>Belum ada rekod markah. Jom mula main!</p>
+        </div>
+      `;
+      return;
+    }
+
+    records.sort((a, b) => b.markah - a.markah);
+
+    let rows = records.map((d, index) => {
+      let rank = index + 1;
+      let rankClass = '';
+      let medal = '';
+
+      if (rank === 1) { rankClass = 'rank-1'; medal = '🥇'; }
+      else if (rank === 2) { rankClass = 'rank-2'; medal = '🥈'; }
+      else if (rank === 3) { rankClass = 'rank-3'; medal = '🥉'; }
+
+      let isSaya = currentUser && d.nama === currentUser.nama;
+
+      return `
+        <tr class="${isSaya ? 'saya' : ''}">
+          <td><span class="rank-num ${rankClass}">${rank}</span> ${medal}</td>
+          <td style="font-weight: ${isSaya ? '800' : '500'}">
+            ${d.nama} ${isSaya ? ' <span style="font-size:10px;color:var(--accent2)">(Anda)</span>' : ''}
+          </td>
+          <td style="font-weight:800;color:var(--gold3)">${d.markah} <span style="color:var(--txt3);font-size:11px;font-weight:500">/ 75</span></td>
+          <td style="font-size:12px;color:var(--txt3);">${d.tarikh || '-'}</td>
+        </tr>
+      `;
+    }).join('');
+
+    container.innerHTML = `
+      <div class="ranking-table-wrap">
+        <table class="ranking-table">
+          <thead>
+            <tr>
+              <th>Kedudukan</th>
+              <th>Nama Murid</th>
+              <th>Markah</th>
+              <th>Tarikh Amali</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  window.onload = function() {
+    renderLeaderboard();
+  };
+  </script>
+</body>
+</html>
