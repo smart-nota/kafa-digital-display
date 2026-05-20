@@ -351,7 +351,7 @@ const ENGINE = {
 
     // Hantar ke GAS
     try {
-      await fetch(window.GAS_URL || 'https://script.google.com/macros/s/AKfycbwbH1f0DlyZXOuapx6M-1TIezlgzlKTNw7pqFcG3RzKYyObuX2tRyB1kGpOzF1-hhmNdw/exec', {
+      await fetch(window.GAS_URL || 'https://script.google.com/macros/s/AKfycbw_disZMS0UX6TN5hBVICgPouxEnmSU__DZlkb_Bl1IrQvx-wXGg9YSZsRh0o3ftsMAWg/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
