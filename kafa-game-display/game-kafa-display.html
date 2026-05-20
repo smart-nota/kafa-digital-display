@@ -697,16 +697,16 @@
       <div class="login-divider"></div>
 
       <div class="form-group">
-        <label for="selKelas">📚 Pilih Kelas</label>
+        <label for="selKelas">📚 Pilih</label>
         <select id="selKelas">
-          <option value="">— Pilih Kelas —</option>
+          <option value="">— Pilih —</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="selPelajar">👤 Pilih Nama Pelajar</label>
+        <label for="selPelajar">👤 Pilih Nama Anda</label>
         <select id="selPelajar" disabled>
-          <option value="">— Pilih Kelas Dahulu —</option>
+          <option value="">— Pilih Dahulu —</option>
         </select>
       </div>
 
@@ -785,7 +785,7 @@
 // ════════════════════════════════════════════════════════════
 
 // GAS URL — gantikan dengan URL Google Apps Script anda
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbx2wJ1l08_K3Ll-QngeMiktYnumxGDpQbM1XnbFfHaSol1iH0taZuaQ7wcXDTYR9MsHJw/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwbH1f0DlyZXOuapx6M-1TIezlgzlKTNw7pqFcG3RzKYyObuX2tRyB1kGpOzF1-hhmNdw/exec';
 
 // State semasa
 let currentUser    = null;   // { nama, kelas, gender }
@@ -881,7 +881,7 @@ document.addEventListener('DOMContentLoaded', function() {
     selPelajar.innerHTML = '';
 
     if (!kelas) {
-      selPelajar.innerHTML = '<option value="">— Pilih Kelas Dahulu —</option>';
+      selPelajar.innerHTML = '<option value="">— Pilih Diatas Dahulu —</option>';
       selPelajar.disabled = true;
       return;
     }
@@ -889,7 +889,7 @@ document.addEventListener('DOMContentLoaded', function() {
     selPelajar.disabled = false;
     var firstOpt = document.createElement('option');
     firstOpt.value = '';
-    firstOpt.textContent = '— Pilih Nama Pelajar —';
+    firstOpt.textContent = '— Pilih Nama Anda —';
     selPelajar.appendChild(firstOpt);
 
     var pelajarList = KELAS_DATA[kelas] || [];
@@ -906,8 +906,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var kelas = selKelas.value;
     var nama  = selPelajar.value;
 
-    if (!kelas) { showToast('Sila pilih kelas dahulu! 😊'); return; }
-    if (!nama)  { showToast('Sila pilih nama pelajar! 😊'); return; }
+    if (!kelas) { showToast('Sila pilih dahulu! 😊'); return; }
+    if (!nama)  { showToast('Sila pilih nama anda! 😊'); return; }
 
     // Tentukan jantina
     var gender = 'lelaki';
@@ -934,7 +934,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!confirm('Adakah anda ingin keluar?')) return;
     currentUser = null;
     selKelas.value = '';
-    selPelajar.innerHTML = '<option value="">— Pilih Kelas Dahulu —</option>';
+    selPelajar.innerHTML = '<option value="">— Pilih Dahulu —</option>';
     selPelajar.disabled  = true;
     document.getElementById('loginScreen').style.display  = 'flex';
     document.getElementById('welcomeSection').style.display = 'none';
