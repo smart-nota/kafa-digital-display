@@ -1169,7 +1169,7 @@ async function loadRankingTable(topikId, container) {
 
   // Cuba ambil dari GAS
   try {
-    if (GAS_URL && GAS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    if (GAS_URL && GAS_URL !== 'https://script.google.com/macros/s/AKfycbw_disZMS0UX6TN5hBVICgPouxEnmSU__DZlkb_Bl1IrQvx-wXGg9YSZsRh0o3ftsMAWg/exec') {
       var url = GAS_URL + '?action=getRanking&topik=' + encodeURIComponent(topikId);
       var res = await fetch(url);
       data = await res.json();
