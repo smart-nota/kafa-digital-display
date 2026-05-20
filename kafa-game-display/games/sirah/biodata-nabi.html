@@ -1,1534 +1,346 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Biodata Nabi Muhammad SAW | Game KAFA</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard & Papan Markah | Game KAFA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🌙</text></svg>"/>
-
-  <!-- ─── GAME.CSS (inline) ─── -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet"/>
+  
   <style>
-  /* ══════════════════════════════════════
-     BASE RESET & VARIABLES
-  ══════════════════════════════════════ */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --bg: #06101f;
+      --bg2: #091626;
+      --surface: #0d1e38;
+      --surface2: #112240;
+      --border: rgba(70,130,255,.15);
+      --gold: #c9963a;
+      --gold2: #e8b84b;
+      --accent: #3d7fff;
+      --txt: #ddeeff;
+      --txt2: #7a9cc8;
+      --radius: 12px;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-game: 'Baloo 2', sans-serif;
+    }
 
-  :root {
-    --bg:           #06101f;
-    --bg2:          #091626;
-    --bg3:          #0c1e3a;
-    --surface:      #0d1e38;
-    --surface2:     #112240;
-    --surface3:     #162d52;
-    --border:       rgba(70,130,255,.10);
-    --border2:      rgba(70,130,255,.20);
-    --border3:      rgba(70,130,255,.36);
-    --gold:         #c9963a;
-    --gold2:        #e8b84b;
-    --gold3:        #f5cc72;
-    --gold-glow:    rgba(201,150,58,.30);
-    --accent:       #3d7fff;
-    --accent2:      #6fa3ff;
-    --accent3:      #b0ccff;
-    --accent-glow:  rgba(61,127,255,.20);
-    --green:        #1ec97a;
-    --green-bg:     rgba(30,201,122,.12);
-    --red:          #ff4f4f;
-    --red-bg:       rgba(255,79,79,.12);
-    --txt:          #ddeeff;
-    --txt2:         #7a9cc8;
-    --txt3:         #3e5f88;
-    --radius-sm:    10px;
-    --radius:       16px;
-    --radius-lg:    22px;
-    --font-body:    'Plus Jakarta Sans', sans-serif;
-    --font-game:    'Baloo 2', sans-serif;
-    --shadow:       0 14px 50px rgba(0,0,0,.55);
-    --shadow-sm:    0 4px 18px rgba(0,0,0,.40);
-    --shadow-gold:  0 6px 30px var(--gold-glow);
-    --transition:   all .22s cubic-bezier(.4,0,.2,1);
-  }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--txt);
+      min-height: 100vh;
+      padding: 30px 15px;
+    }
 
-  html { -webkit-text-size-adjust: 100%; }
-  body {
-    font-family: var(--font-body);
-    background: var(--bg);
-    color: var(--txt);
-    min-height: 100vh;
-    padding: 0 0 40px;
-    overflow-x: hidden;
-  }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
 
-  body::before {
-    content: '';
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background:
-      radial-gradient(ellipse 90% 50% at 10% -5%, rgba(61,127,255,.07) 0%, transparent 60%),
-      radial-gradient(ellipse 70% 45% at 92% 108%, rgba(201,150,58,.06) 0%, transparent 60%);
-  }
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
 
-  /* ══ TOP BAR ══ */
-  .game-topbar {
-    position: sticky; top: 0; z-index: 100;
-    display: flex; align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 0 18px;
-    height: 58px;
-    background: rgba(6,16,31,.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border2);
-  }
+    header h1 {
+      font-family: var(--font-game);
+      color: var(--gold2);
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
 
-  .game-topbar::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), var(--gold3), var(--accent2), transparent);
-    opacity: .6;
-  }
+    header p {
+      color: var(--txt2);
+      font-size: 0.95rem;
+    }
 
-  .back-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 7px 13px;
-    background: transparent;
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-sm);
-    color: var(--txt2);
-    font-family: var(--font-body); font-size: 12.5px; font-weight: 600;
-    cursor: pointer; text-decoration: none;
-    transition: var(--transition);
-    flex-shrink: 0;
-  }
-  .back-btn:hover { border-color: var(--accent2); color: var(--accent3); background: var(--accent-glow); }
+    /* Form Daftar Mula Game */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
 
-  .game-info { flex: 1; min-width: 0; text-align: center; }
-  .game-info h2 {
-    font-family: var(--font-game);
-    font-size: 14px; font-weight: 800;
-    color: var(--txt); white-space: nowrap;
-    overflow: hidden; text-overflow: ellipsis;
-  }
-  .game-info p { font-size: 10.5px; color: var(--txt3); font-weight: 500; margin-top: 1px; }
+    .card-title {
+      font-family: var(--font-game);
+      font-size: 1.25rem;
+      color: var(--txt);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-  /* Stage dots */
-  .stage-indicator { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
-  .stage-dot {
-    width: 30px; height: 30px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-game); font-size: 11px; font-weight: 800;
-    border: 1.5px solid var(--border2);
-    background: var(--bg3); color: var(--txt3);
-    transition: var(--transition);
-  }
-  .stage-dot.active {
-    border-color: var(--accent);
-    background: var(--accent-glow);
-    color: var(--accent2);
-    animation: pulseDot 1.6s ease infinite;
-  }
-  .stage-dot.done {
-    border-color: var(--green);
-    background: var(--green-bg);
-    color: var(--green);
-  }
+    .form-group {
+      margin-bottom: 12px;
+    }
 
-  @keyframes pulseDot {
-    0%,100% { box-shadow: 0 0 0 0 rgba(61,127,255,.4); }
-    60%      { box-shadow: 0 0 0 7px rgba(61,127,255,0); }
-  }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--txt2);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
 
-  /* ══ SCORE BAR ══ */
-  .score-bar {
-    display: flex; align-items: center;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 18px; gap: 0;
-  }
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+    }
 
-  .score-item {
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
-  }
-  .s-val {
-    font-family: var(--font-game);
-    font-size: 1.15rem; font-weight: 800; color: var(--txt);
-  }
-  .s-label {
-    font-size: 9.5px; color: var(--txt3); font-weight: 700;
-    text-transform: uppercase; letter-spacing: .07em;
-  }
-  .score-divider { width: 1px; height: 32px; background: var(--border2); flex-shrink: 0; }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
 
-  /* ══ GAME AREA ══ */
-  #gameArea {
-    position: relative; z-index: 1;
-    max-width: 640px; margin: 0 auto;
-    padding: 18px 16px 32px;
-  }
+    .btn-mula {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--accent), #5b9fff);
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-family: var(--font-game);
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: transform 0.2s;
+    }
 
-  /* ── Timer ── */
-  .timer-wrap { margin-bottom: 14px; }
-  .timer-label {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 6px; font-size: 11.5px; font-weight: 700; color: var(--txt3);
-  }
-  .time-left {
-    font-family: var(--font-game);
-    font-size: 1rem; font-weight: 900; color: var(--accent2);
-    transition: color .4s;
-  }
-  .time-left.warning { color: var(--gold2); }
-  .time-left.danger  { color: var(--red); }
+    .btn-mula:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
 
-  .timer-bar-bg {
-    height: 6px; background: var(--bg3);
-    border-radius: 99px; overflow: hidden;
-    border: 1px solid var(--border);
-  }
-  .timer-bar-fill {
-    height: 100%; border-radius: 99px;
-    background: linear-gradient(90deg, var(--accent), var(--gold2));
-    transition: width 1s linear, background .5s;
-  }
-  .timer-bar-fill.warning { background: linear-gradient(90deg, var(--gold2), var(--red)); }
+    /* Papan Markah / Ranking Table */
+    .ranking-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
 
-  /* ── Question Card ── */
-  .question-card {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-lg);
-    padding: 22px 20px;
-    margin-bottom: 14px;
-    animation: fadeInUp .35s ease both;
-    position: relative; overflow: hidden;
-  }
-  .question-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: .5;
-  }
+    .ranking-table th {
+      background: var(--surface2);
+      color: var(--txt2);
+      text-align: left;
+      padding: 10px;
+      font-weight: 700;
+      border-bottom: 2px solid var(--border);
+    }
 
-  .q-meta {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
-  }
-  .q-badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    padding: 3px 10px; border-radius: 20px;
-    font-size: 10px; font-weight: 800; letter-spacing: .05em;
-    text-transform: uppercase;
-  }
-  .q-badge.mcq   { background: rgba(61,127,255,.15); color: var(--accent2); border: 1px solid rgba(61,127,255,.25); }
-  .q-badge.match { background: rgba(201,150,58,.15); color: var(--gold2); border: 1px solid rgba(201,150,58,.25); }
-  .q-badge.sort  { background: rgba(30,201,122,.15); color: var(--green); border: 1px solid rgba(30,201,122,.25); }
+    .ranking-table td {
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      color: var(--txt);
+    }
 
-  .q-num { font-size: 11px; color: var(--txt3); font-weight: 600; }
+    .ranking-table tr:hover {
+      background: rgba(61,127,255,0.05);
+    }
 
-  .q-text {
-    font-family: var(--font-game);
-    font-size: 1.05rem; font-weight: 700; color: var(--txt);
-    line-height: 1.5; margin-bottom: 20px;
-  }
+    .rank-badge {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      text-align: center;
+      border-radius: 50%;
+      font-weight: 800;
+      font-size: 0.8rem;
+    }
+    .rank-1 { background: var(--gold); color: #000; }
+    .rank-2 { background: #b0b0b0; color: #000; }
+    .rank-3 { background: #cd7f32; color: #000; }
 
-  /* ══ MCQ OPTIONS ══ */
-  .options-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-  }
+    .score-val {
+      font-family: var(--font-game);
+      font-weight: 800;
+      color: var(--gold2);
+    }
 
-  .option-btn {
-    padding: 14px 13px;
-    background: var(--bg2);
-    border: 1.5px solid var(--border2);
-    border-radius: var(--radius-sm);
-    font-family: var(--font-game); font-size: 13.5px; font-weight: 700;
-    color: var(--txt2); cursor: pointer;
-    transition: var(--transition);
-    text-align: center; line-height: 1.35;
-    position: relative; overflow: hidden;
-  }
-  .option-btn:hover:not(:disabled) {
-    border-color: var(--accent);
-    background: var(--accent-glow);
-    color: var(--txt);
-    transform: translateY(-2px);
-  }
-  .option-btn.correct {
-    border-color: var(--green) !important;
-    background: var(--green-bg) !important;
-    color: var(--green) !important;
-    animation: correctPop .4s ease;
-  }
-  .option-btn.wrong {
-    border-color: var(--red) !important;
-    background: var(--red-bg) !important;
-    color: var(--red) !important;
-    animation: shake .4s ease;
-  }
-  .option-btn:disabled { cursor: default; }
-  .option-letter {
-    display: inline-flex; width: 20px; height: 20px;
-    background: var(--surface3); color: var(--accent2);
-    border-radius: 5px; align-items: center; justify-content: center;
-    font-size: 10px; font-weight: 800; margin-right: 6px;
-    flex-shrink: 0; vertical-align: middle;
-    transition: var(--transition);
-  }
-  .option-btn.correct .option-letter { background: var(--green); color: #fff; }
-  .option-btn.wrong   .option-letter { background: var(--red); color: #fff; }
+    .no-data {
+      text-align: center;
+      color: var(--txt3);
+      padding: 20px;
+      font-style: italic;
+    }
 
-  /* ══ MATCHING GAME (Tahap 2) ══ */
-  .match-container {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px;
-  }
-
-  .match-col-title {
-    font-size: 10px; font-weight: 800; color: var(--txt3);
-    text-transform: uppercase; letter-spacing: .08em;
-    margin-bottom: 8px; text-align: center;
-  }
-
-  .match-item {
-    padding: 12px 14px;
-    background: var(--bg2);
-    border: 1.5px solid var(--border2);
-    border-radius: var(--radius-sm);
-    font-family: var(--font-game); font-size: 13px; font-weight: 700;
-    color: var(--txt2); cursor: pointer;
-    transition: var(--transition);
-    text-align: center;
-    line-height: 1.3;
-    user-select: none;
-  }
-
-  .match-item:hover { border-color: var(--accent2); color: var(--accent3); }
-
-  .match-item.selected {
-    border-color: var(--gold);
-    background: rgba(201,150,58,.12);
-    color: var(--gold2);
-    box-shadow: 0 0 0 2px var(--gold-glow);
-  }
-
-  .match-item.matched-correct {
-    border-color: var(--green) !important;
-    background: var(--green-bg) !important;
-    color: var(--green) !important;
-    cursor: default;
-    animation: correctPop .4s ease;
-  }
-
-  .match-item.matched-wrong {
-    border-color: var(--red) !important;
-    background: var(--red-bg) !important;
-    color: var(--red) !important;
-    cursor: default;
-    animation: shake .4s ease;
-  }
-
-  .match-item.disabled { opacity: .4; cursor: not-allowed; }
-
-  .match-cols-wrap {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-  }
-
-  .match-col { display: flex; flex-direction: column; gap: 8px; }
-
-  .match-progress {
-    text-align: center; font-size: 12px; color: var(--txt3);
-    font-weight: 600; margin-top: 10px;
-  }
-
-  .match-score-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: var(--green-bg); border: 1px solid rgba(30,201,122,.3);
-    color: var(--green); border-radius: 20px;
-    padding: 3px 10px; font-size: 11px; font-weight: 800;
-    margin-top: 6px;
-  }
-
-  /* ══ DRAG & DROP SORT (Tahap 3) ══ */
-  .sort-instruction {
-    font-size: 12px; color: var(--txt3); font-weight: 600;
-    margin-bottom: 12px; text-align: center;
-    padding: 8px 14px;
-    background: rgba(201,150,58,.07);
-    border: 1px solid rgba(201,150,58,.2);
-    border-radius: var(--radius-sm);
-  }
-
-  .sort-list {
-    display: flex; flex-direction: column; gap: 8px;
-  }
-
-  .sort-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 13px 16px;
-    background: var(--bg2);
-    border: 1.5px solid var(--border2);
-    border-radius: var(--radius-sm);
-    cursor: grab;
-    transition: var(--transition);
-    user-select: none;
-    -webkit-user-select: none;
-    position: relative;
-  }
-
-  .sort-item:active { cursor: grabbing; }
-
-  .sort-item.dragging {
-    opacity: .5; border-color: var(--gold); transform: scale(.98);
-  }
-
-  .sort-item.drag-over {
-    border-color: var(--accent); background: var(--accent-glow);
-    transform: translateY(-2px);
-  }
-
-  .sort-handle {
-    display: flex; flex-direction: column; gap: 3px;
-    flex-shrink: 0; opacity: .4;
-  }
-  .sort-handle span {
-    display: block; width: 16px; height: 2px;
-    background: var(--txt2); border-radius: 2px;
-  }
-
-  .sort-item-num {
-    width: 26px; height: 26px; flex-shrink: 0;
-    background: var(--surface3); border-radius: 7px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-game); font-size: 12px; font-weight: 800;
-    color: var(--accent2);
-  }
-
-  .sort-item-text {
-    font-family: var(--font-game); font-size: 13px; font-weight: 700;
-    color: var(--txt); flex: 1;
-  }
-
-  .sort-item.correct-pos {
-    border-color: var(--green) !important;
-    background: var(--green-bg) !important;
-  }
-  .sort-item.correct-pos .sort-item-num { background: var(--green); color: #fff; }
-
-  .sort-item.wrong-pos {
-    border-color: var(--red) !important;
-    background: var(--red-bg) !important;
-  }
-
-  .btn-semak {
-    width: 100%; margin-top: 14px;
-    padding: 14px;
-    background: linear-gradient(135deg, var(--gold), var(--gold3));
-    border: none; border-radius: var(--radius-sm);
-    font-family: var(--font-game); font-size: 15px; font-weight: 800;
-    color: #06101f; cursor: pointer;
-    box-shadow: var(--shadow-gold);
-    transition: var(--transition);
-    letter-spacing: .04em;
-  }
-  .btn-semak:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 36px var(--gold-glow); }
-  .btn-semak:disabled { opacity: .5; cursor: not-allowed; }
-
-  /* ══ RESULT CARD ══ */
-  .result-card {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-lg);
-    padding: 36px 24px;
-    text-align: center;
-    animation: fadeInUp .45s ease both;
-    position: relative; overflow: hidden;
-  }
-
-  .result-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), var(--gold3), var(--accent2), transparent);
-  }
-
-  .result-emoji { font-size: 56px; margin-bottom: 14px; display: block; }
-  .result-title {
-    font-family: var(--font-game);
-    font-size: 1.5rem; font-weight: 900; color: var(--txt);
-    margin-bottom: 6px;
-  }
-  .result-score {
-    font-family: var(--font-game);
-    font-size: 3rem; font-weight: 900;
-    color: var(--gold2); letter-spacing: -2px;
-    margin: 6px 0 4px;
-  }
-  .result-score span { font-size: 1.1rem; color: var(--txt3); font-weight: 600; }
-  .result-msg { font-size: 13px; color: var(--txt2); margin-bottom: 22px; line-height: 1.6; }
-  .result-detail { font-size: 13px; color: var(--txt3); margin-bottom: 24px; }
-
-  .btn-next {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 13px 28px;
-    background: linear-gradient(135deg, var(--accent), #5b9fff);
-    border: none; border-radius: var(--radius-sm);
-    font-family: var(--font-game); font-size: 1rem; font-weight: 800;
-    color: #fff; cursor: pointer;
-    box-shadow: var(--shadow-accent);
-    transition: var(--transition);
-    text-decoration: none;
-  }
-  .btn-next:hover { transform: translateY(-2px); filter: brightness(1.1); }
-
-  /* Final result */
-  .stars-row {
-    display: flex; gap: 6px; justify-content: center;
-    font-size: 2rem; margin: 10px 0 18px;
-  }
-  .star-pop { display: inline-block; animation: starPop .5s cubic-bezier(.34,1.56,.64,1) both; }
-  .star-pop:nth-child(2) { animation-delay: .1s; }
-  .star-pop:nth-child(3) { animation-delay: .2s; }
-
-  .total-breakdown {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 14px; margin: 16px 0;
-    text-align: left;
-  }
-  .breakdown-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px;
-  }
-  .breakdown-row:last-child { border-bottom: none; }
-  .br-label { color: var(--txt3); font-weight: 600; }
-  .br-val   { font-family: var(--font-game); font-weight: 800; color: var(--gold2); }
-
-  .attempt-info {
-    display: inline-block;
-    background: rgba(201,150,58,.10); color: var(--gold2);
-    border: 1px solid rgba(201,150,58,.25);
-    border-radius: 20px; padding: 5px 14px;
-    font-size: 11.5px; font-weight: 700; margin-bottom: 14px;
-  }
-
-  .final-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-
-  .btn-secondary {
-    padding: 13px 20px;
-    background: var(--bg3);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-sm);
-    font-family: var(--font-game); font-size: 14px; font-weight: 700;
-    color: var(--txt2); cursor: pointer;
-    transition: var(--transition);
-  }
-  .btn-secondary:hover { border-color: var(--accent2); color: var(--accent3); }
-
-  .btn-success {
-    padding: 14px 20px;
-    background: linear-gradient(135deg, #0d6a42, var(--green));
-    border: none; border-radius: var(--radius-sm);
-    font-family: var(--font-game); font-size: 14px; font-weight: 800;
-    color: #fff; cursor: pointer;
-    box-shadow: 0 4px 18px rgba(30,201,122,.28);
-    transition: var(--transition);
-  }
-  .btn-success:hover { transform: translateY(-2px); filter: brightness(1.08); }
-
-  /* ══ LOCKED SCREEN ══ */
-  .locked-screen {
-    text-align: center; padding: 60px 20px;
-  }
-
-  /* ══ TOAST ══ */
-  .game-toast {
-    position: fixed; bottom: 80px; left: 50%;
-    transform: translateX(-50%) translateY(12px);
-    background: var(--surface2); border: 1px solid var(--border3);
-    color: var(--txt); font-size: 13px; font-weight: 600;
-    padding: 11px 20px; border-radius: 40px;
-    opacity: 0; transition: opacity .28s, transform .28s;
-    z-index: 500; pointer-events: none;
-    white-space: nowrap; box-shadow: var(--shadow);
-  }
-  .game-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  /* ══ COFFEE BTN ══ */
-  .support-btn-wrapper {
-    position: fixed; bottom: 22px; right: 18px; z-index: 300;
-    display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
-    transition: opacity .35s, transform .35s;
-  }
-  .support-btn-wrapper.hidden { opacity: 0; transform: translateY(14px) scale(.88); pointer-events: none; }
-  .coffee-bubble {
-    background: var(--surface2); border: 1px solid var(--border2);
-    color: var(--txt); font-size: 11px; line-height: 1.5;
-    padding: 8px 12px; border-radius: 12px 12px 4px 12px;
-    max-width: 175px; text-align: right;
-    box-shadow: var(--shadow); pointer-events: none;
-  }
-  .coffee-btn {
-    width: 50px; height: 50px; border-radius: 50%;
-    background: linear-gradient(135deg, #b5711e, var(--gold2));
-    display: flex; align-items: center; justify-content: center;
-    text-decoration: none;
-    box-shadow: 0 4px 22px rgba(201,150,58,.45);
-    border: 2px solid rgba(255,255,255,.18);
-    transition: transform .22s, box-shadow .22s;
-    animation: coffeePulse 3s ease-in-out infinite;
-  }
-  .coffee-btn:hover { transform: scale(1.12) translateY(-3px); animation: none; }
-  .coffee-btn svg { width: 24px; height: 24px; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; fill: none; }
-  @keyframes coffeePulse {
-    0%,100% { box-shadow: 0 4px 22px rgba(201,150,58,.45); }
-    50%      { box-shadow: 0 4px 32px rgba(201,150,58,.70); }
-  }
-  .steam-p:nth-child(1) { animation: steamRise 1.8s ease-in-out infinite; }
-  .steam-p:nth-child(2) { animation: steamRise 1.8s ease-in-out .45s infinite; }
-  @keyframes steamRise {
-    0%,100% { transform: translateY(0); opacity: .8; }
-    50%      { transform: translateY(-5px); opacity: .2; }
-  }
-
-  /* ══ ANIMATIONS ══ */
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes correctPop {
-    0%   { transform: scale(1); }
-    40%  { transform: scale(1.04); }
-    100% { transform: scale(1); }
-  }
-  @keyframes shake {
-    0%,100% { transform: translateX(0); }
-    25%      { transform: translateX(-6px); }
-    75%      { transform: translateX(6px); }
-  }
-  @keyframes starPop {
-    0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
-    70%  { transform: scale(1.25) rotate(5deg); opacity: 1; }
-    100% { transform: scale(1) rotate(0); opacity: 1; }
-  }
-
-  /* ══ RESPONSIVE ══ */
-  @media (max-width: 480px) {
-    #gameArea { padding: 14px 12px 28px; }
-    .options-grid { grid-template-columns: 1fr; }
-    .game-info h2 { font-size: 12px; }
-    .match-cols-wrap { gap: 8px; }
-    .match-item { font-size: 12px; padding: 10px 11px; }
-    .sort-item-text { font-size: 12px; }
-    .result-card { padding: 28px 16px; }
-    .result-score { font-size: 2.5rem; }
-  }
+    .btn-reset {
+      background: transparent;
+      border: 1px solid rgba(255, 79, 79, 0.3);
+      color: #ff4f4f;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      float: right;
+      margin-top: -5px;
+    }
+    .btn-reset:hover {
+      background: rgba(255, 79, 79, 0.1);
+    }
   </style>
 </head>
 <body>
 
-<!-- ══ TOP BAR ══ -->
-<div class="game-topbar" id="gameHeaderInfo">
-  <a href="../../index.html" class="back-btn" id="backBtn">← Kembali</a>
-  <div class="game-info">
-    <h2>Biodata Nabi Muhammad SAW ﷺ</h2>
-    <p>Sirah • 3 Tahap • 15 Soalan</p>
+<div class="container">
+  <header>
+    <h1>🌙 Game KAFA Digital</h1>
+    <p>Uji kefahaman Sirah & Biodata Nabi Muhammad SAW ﷺ</p>
+  </header>
+
+  <div class="card">
+    <div class="card-title">📝 Daftar Maklumat Pelajar</div>
+    <form id="loginForm" onsubmit="mulaPermainan(event)">
+      <div class="form-group">
+        <label for="nama">Nama Penuh:</label>
+        <input type="text" id="nama" class="form-control" required placeholder="Contoh: AHMAD BIN ALI">
+      </div>
+      <div class="form-group">
+        <label for="kelas">Kelas:</label>
+        <input type="text" id="kelas" class="form-control" required placeholder="Contoh: 3 AL-GHAZALI">
+      </div>
+      <button type="submit" class="btn-mula">🚀 Main Sekarang</button>
+    </form>
   </div>
-  <div class="stage-indicator" id="stageDots">
-    <div class="stage-dot active" id="stageDot1">T1</div>
-    <div class="stage-dot" id="stageDot2">T2</div>
-    <div class="stage-dot" id="stageDot3">T3</div>
+
+  <div class="card">
+    <div class="card-title">
+      🏆 Kedudukan Papan Markah
+      <button class="btn-reset" onclick="padamMarkah()">Padam Data</button>
+    </div>
+    
+    <table class="ranking-table" id="rankingTable" style="display: none;">
+      <thead>
+        <tr>
+          <th style="width: 10%;">No</th>
+          <th style="width: 50%;">Nama &amp; Kelas</th>
+          <th style="width: 20%;">Tarikh</th>
+          <th style="width: 20%;">Markah</th>
+        </tr>
+      </thead>
+      <tbody id="rankingBody">
+        </tbody>
+    </table>
+    
+    <div id="noDataMsg" class="no-data">Belum ada rekod markah. Sila main kuiz dahulu!</div>
   </div>
 </div>
 
-<!-- ══ SCORE BAR ══ -->
-<div class="score-bar" id="scoreBar">
-  <div class="score-item"><div class="s-val">—</div><div class="s-label">Tahap</div></div>
-  <div class="score-divider"></div>
-  <div class="score-item"><div class="s-val">—</div><div class="s-label">Markah</div></div>
-  <div class="score-divider"></div>
-  <div class="score-item"><div class="s-val">—</div><div class="s-label">Soalan</div></div>
-  <div class="score-divider"></div>
-  <div class="score-item"><div class="s-val">—</div><div class="s-label">Saat</div></div>
-</div>
-
-<!-- ══ GAME AREA ══ -->
-<div id="gameArea">
-  <div style="text-align:center;padding:60px 24px;color:var(--txt3)">
-    <div style="font-size:2.5rem;margin-bottom:12px">⏳</div>
-    <p>Memuatkan permainan...</p>
-  </div>
-</div>
-
-<!-- ══ COFFEE BTN ══ -->
-<div class="support-btn-wrapper hidden" id="coffeeWrap">
-  <div class="coffee-bubble">Suka web ini?<br>Belanja saya kopi! ☕</div>
-  <a href="https://smart-nota.github.io/nota-digital/sokong-saya.html"
-     class="coffee-btn" title="Sokong Kami" target="_blank" rel="noopener">
-    <svg viewBox="0 0 24 24">
-      <path class="steam-p" d="M9 4C9 4 7.5 5.5 9 7C10.5 8.5 9 10 9 10" fill="none"/>
-      <path class="steam-p" d="M13 3C13 3 11.5 4.5 13 6C14.5 7.5 13 9 13 9" fill="none"/>
-      <path d="M18 10H4C2.9 10 2 10.9 2 12V15C2 18.3 4.7 21 8 21H14C17.3 21 20 18.3 20 15V12C20 10.9 19.1 10 18 10Z" fill="rgba(255,255,255,.9)" stroke="none"/>
-      <path d="M20 12C20 12 22 12 22 14.5C22 17 20 17 20 17" fill="none"/>
-    </svg>
-  </a>
-</div>
-
-<div class="game-toast" id="gameToast"></div>
-
-<!-- ══ SCRIPTS ══ -->
 <script>
-// ══════════════════════════════════════════════════════════════
-//  DATA SOALAN — Biodata Nabi Muhammad SAW
-//  Tahap 1: MCQ (Aneka Pilihan)
-//  Tahap 2: Padanan (Matching)
-//  Tahap 3: Susun Semula (Ordering / Drag-Drop)
-// ══════════════════════════════════════════════════════════════
+  const TOPIK_ID = 'sirah-biodata-nabi'; // Mesti sama dengan topikId di fail biodata-nabi.html
 
-window.GAS_URL = 'https://script.google.com/macros/s/AKfycbw_disZMS0UX6TN5hBVICgPouxEnmSU__DZlkb_Bl1IrQvx-wXGg9YSZsRh0o3ftsMAWg/exec';
-
-// ──── TAHAP 1: MCQ (5 soalan) ────
-const SOALAN_T1 = [
-  {
-    jenis: 'mcq',
-    soalan: "Siapakah nama bapa Nabi Muhammad SAW?",
-    pilihan: ["Abdullah", "Abdul Mutalib", "Abu Talib", "Aminah"],
-    jawapan: "Abdullah"
-  },
-  {
-    jenis: 'mcq',
-    soalan: "Siapakah nama ibu Nabi Muhammad SAW?",
-    pilihan: ["Aminah binti Wahab", "Khadijah binti Khuwailid", "Halimah binti Abi Zuaib", "Fatimah binti Asad"],
-    jawapan: "Aminah binti Wahab"
-  },
-  {
-    jenis: 'mcq',
-    soalan: "Siapakah datuk Nabi Muhammad SAW yang memeliharanya?",
-    pilihan: ["Abdul Mutalib", "Abdullah", "Hashim", "Qusai"],
-    jawapan: "Abdul Mutalib"
-  },
-  {
-    jenis: 'mcq',
-    soalan: "Siapakah ibu susuan (ibu asuh) Nabi Muhammad SAW?",
-    pilihan: ["Halimah binti Abi Zuaib", "Aminah binti Wahab", "Suwaibah al-Aslamiyah", "Ummu Aiman"],
-    jawapan: "Halimah binti Abi Zuaib"
-  },
-  {
-    jenis: 'mcq',
-    soalan: "Siapakah isteri pertama Nabi Muhammad SAW?",
-    pilihan: ["Khadijah binti Khuwailid", "Aisyah binti Abu Bakar", "Saudah binti Zam'ah", "Hafsah binti Umar"],
-    jawapan: "Khadijah binti Khuwailid"
-  }
-];
-
-// ──── TAHAP 2: PADANAN MATCHING (5 pasangan) ────
-// Setiap soalan: padankan 5 item kiri dengan 5 item kanan
-const SOALAN_T2 = [
-  {
-    jenis: 'matching',
-    arahan: "Padankan setiap perkara dengan fakta yang betul:",
-    pasangan: [
-      { kiri: "Tarikh lahir",           kanan: "12 Rabiulawal" },
-      { kiri: "Tahun lahir",            kanan: "571 Masihi" },
-      { kiri: "Tempat lahir",           kanan: "Makkah al-Mukarramah" },
-      { kiri: "Nama tahun kelahiran",   kanan: "Tahun Gajah" },
-      { kiri: "Kabilah Nabi",           kanan: "Quraisy" }
-    ]
-  }
-];
-
-// ──── TAHAP 3: SUSUN SEMULA CHRONOLOGI (5 peristiwa) ────
-const SOALAN_T3 = [
-  {
-    jenis: 'sort',
-    arahan: "Susun peristiwa berikut mengikut urutan kronologi yang betul:",
-    items: [
-      "Nabi Muhammad SAW dilahirkan di Makkah",
-      "Bapa Nabi (Abdullah) meninggal dunia",
-      "Ibu Nabi (Aminah) meninggal dunia ketika Nabi berumur 6 tahun",
-      "Datuk Nabi (Abdul Mutalib) meninggal ketika Nabi berumur 8 tahun",
-      "Nabi dipelihara oleh bapa saudaranya Abu Talib"
-    ],
-    jawapan: [0, 1, 2, 3, 4] // indeks urutan betul (0=pertama)
-  },
-  {
-    jenis: 'sort',
-    arahan: "Susun silsilah keturunan Nabi mengikut urutan dari bapa ke atas:",
-    items: [
-      "Abdul Mutalib (datuk)",
-      "Hashim (moyang)",
-      "Abdullah (bapa)",
-      "Adnan (nenek moyang jauh)",
-      "Qusai (leluhur)"
-    ],
-    jawapan: [2, 0, 1, 4, 3]
-    // Abdullah → Abdul Mutalib → Hashim → Qusai → Adnan
-  },
-  {
-    jenis: 'sort',
-    arahan: "Susun nama anak-anak Nabi (lelaki dahulu, kemudian perempuan) mengikut urutan kelahiran:",
-    items: [
-      "Al-Qasim (anak lelaki pertama)",
-      "Ibrahim (anak lelaki bungsu)",
-      "Zainab (anak perempuan sulung)",
-      "Ruqayyah",
-      "Fatimah az-Zahra"
-    ],
-    jawapan: [0, 2, 3, 4, 1]
-  }
-];
-
-// ══════════════════════════════════════════════════════════════
-//  ENGINE UTAMA
-// ══════════════════════════════════════════════════════════════
-const ENGINE = {
-  currentStage: 1,
-  currentQ:     0,
-  stageMark:    [0, 0, 0],
-  timerInterval: null,
-  timeLeft:     20,
-  answered:     false,
-  userInfo:     {},
-  attempts:     0,
-
-  // ── matching state ──
-  matchSelected: null,
-  matchPaired:   [],
-
-  // ── sort state ──
-  sortOrder: [],
-  dragSrcIdx: null,
-
-  // ── Init ──
-  init() {
+  document.addEventListener('DOMContentLoaded', () => {
+    paparRanking();
+    
+    // Auto-isi nama jika pelajar ingin main semula
     const params = new URLSearchParams(window.location.search);
-    this.userInfo = {
-      nama:      params.get('nama')      || 'Pelajar',
-      kelas:     params.get('kelas')     || '',
-      topikId:   params.get('topikId')   || 'sirah-biodata-nabi',
-      topikNama: params.get('topikNama') || 'Biodata Nabi Muhammad SAW',
-      subjek:    params.get('subjek')    || 'Sirah'
-    };
+    if (params.get('nama')) document.getElementById('nama').value = params.get('nama');
+    if (params.get('kelas')) document.getElementById('kelas').value = params.get('kelas');
+  });
 
-    this.attempts = this.getAttempts();
-    if (this.attempts >= 3) { this.showLockedScreen(); return; }
-
-    this.attempts = this.addAttempt();
-    this.renderGameHeader();
-    this.startStage(1);
-  },
-
-  // ── Header ──
-  renderGameHeader() {
-    const el = document.getElementById('gameHeaderInfo');
-    if (!el) return;
-    const namaTxt = this.fmtNama(this.userInfo.nama);
-    el.innerHTML = `
-      <a href="../../index.html" class="back-btn">← Kembali</a>
-      <div class="game-info">
-        <h2>${this.userInfo.topikNama} ﷺ</h2>
-        <p>${this.userInfo.subjek} • ${namaTxt}</p>
-      </div>
-      <div class="stage-indicator" id="stageDots">
-        ${[1,2,3].map(s=>`<div class="stage-dot ${s===1?'active':''}" id="stageDot${s}">T${s}</div>`).join('')}
-      </div>`;
-  },
-
-  updateStageDots(stage) {
-    for (let s=1;s<=3;s++) {
-      const d = document.getElementById('stageDot'+s);
-      if (!d) continue;
-      d.className='stage-dot';
-      if (s < stage)  d.classList.add('done');
-      if (s === stage) d.classList.add('active');
-    }
-  },
-
-  // ── Stage ──
-  startStage(stage) {
-    this.currentStage = stage;
-    this.currentQ     = 0;
-    this.stageMark[stage-1] = 0;
-    this.updateStageDots(stage);
-    this.renderScoreBar();
-
-    if (stage === 1)      this.renderMCQ();
-    else if (stage === 2) this.renderMatching();
-    else if (stage === 3) this.renderSort();
-  },
-
-  // ── Score Bar ──
-  renderScoreBar() {
-    const el = document.getElementById('scoreBar');
-    if (!el) return;
-    el.innerHTML = `
-      <div class="score-item"><div class="s-val">Tahap ${this.currentStage}</div><div class="s-label">Tahap</div></div>
-      <div class="score-divider"></div>
-      <div class="score-item"><div class="s-val" id="sMarkah">${this.stageMark[this.currentStage-1]}</div><div class="s-label">Markah</div></div>
-      <div class="score-divider"></div>
-      <div class="score-item"><div class="s-val" id="sSoalan">${this.currentQ+1}/5</div><div class="s-label">Soalan</div></div>
-      <div class="score-divider"></div>
-      <div class="score-item"><div class="s-val" id="sTimer">20</div><div class="s-label">Saat</div></div>`;
-  },
-
-  updateScoreBar() {
-    const m = document.getElementById('sMarkah');
-    const s = document.getElementById('sSoalan');
-    if (m) m.textContent = this.stageMark[this.currentStage-1];
-    if (s) s.textContent = (this.currentQ+1) + '/5';
-  },
-
-  // ══════════════════════════════════════
-  //  TAHAP 1: MCQ
-  // ══════════════════════════════════════
-  renderMCQ() {
-    const soalan = SOALAN_T1[this.currentQ];
-    if (!soalan) return;
-
-    const opts = this.shuffle([...soalan.pilihan]);
-    const letters = ['A','B','C','D'];
-    const optHtml = opts.map((o,i)=>`
-      <button class="option-btn" data-ans="${this.esc(o)}" onclick="ENGINE.pilihMCQ('${this.esc(o)}')">
-        <span class="option-letter">${letters[i]}</span>${o}
-      </button>`).join('');
-
-    document.getElementById('gameArea').innerHTML = `
-      <div class="timer-wrap">
-        <div class="timer-label">
-          <span>⏱ Masa</span>
-          <span class="time-left" id="timeDisp">20</span>
-        </div>
-        <div class="timer-bar-bg"><div class="timer-bar-fill" id="timerBar" style="width:100%"></div></div>
-      </div>
-      <div class="question-card">
-        <div class="q-meta">
-          <span class="q-badge mcq">MCQ</span>
-          <span class="q-num">Soalan ${this.currentQ+1} / 5 — Tahap 1</span>
-        </div>
-        <div class="q-text">${soalan.soalan}</div>
-        <div class="options-grid">${optHtml}</div>
-      </div>`;
-
-    this.answered = false;
-    this.startTimer(20);
-    this.updateScoreBar();
-  },
-
-  pilihMCQ(ans) {
-    if (this.answered) return;
-    this.answered = true;
-    clearInterval(this.timerInterval);
-
-    const soalan = SOALAN_T1[this.currentQ];
-    const betul  = soalan.jawapan;
-    const isOk   = ans === betul;
-    if (isOk) this.stageMark[0] += 5;
-
-    document.querySelectorAll('.option-btn').forEach(btn => {
-      btn.disabled = true;
-      if (btn.dataset.ans === betul) btn.classList.add('correct');
-      if (btn.dataset.ans === ans && !isOk) btn.classList.add('wrong');
-    });
-
-    setTimeout(() => {
-      this.currentQ++;
-      if (this.currentQ >= 5) this.endStage1();
-      else this.renderMCQ();
-    }, 1400);
-  },
-
-  endStage1() {
-    clearInterval(this.timerInterval);
-    this.showStageResult(1, this.stageMark[0]);
-  },
-
-  // ══════════════════════════════════════
-  //  TAHAP 2: MATCHING (PADANAN)
-  // ══════════════════════════════════════
-  renderMatching() {
-    this.renderScoreBar();
-    const data   = SOALAN_T2[0];
-    const kiri   = data.pasangan.map(p => p.kiri);
-    const kananS = this.shuffle([...data.pasangan.map(p => p.kanan)]);
-
-    // Build peta jawapan
-    this.matchMap = {};
-    data.pasangan.forEach(p => { this.matchMap[p.kiri] = p.kanan; });
-    this.matchSelected  = null;
-    this.matchPaired    = []; // [{kiri, kanan}]
-    this.matchCorrect   = 0;
-    this.matchAttempted = 0;
-    this.kiriList       = kiri;
-    this.kananList      = kananS;
-
-    const kiriHtml  = kiri.map((k,i) =>
-      `<div class="match-item" id="kiri_${i}" data-key="${this.esc(k)}" data-side="kiri" onclick="ENGINE.matchClick(this)">${k}</div>`
-    ).join('');
-
-    const kananHtml = kananS.map((k,i) =>
-      `<div class="match-item" id="kanan_${i}" data-val="${this.esc(k)}" data-side="kanan" onclick="ENGINE.matchClick(this)">${k}</div>`
-    ).join('');
-
-    document.getElementById('gameArea').innerHTML = `
-      <div class="question-card">
-        <div class="q-meta">
-          <span class="q-badge match">PADANAN</span>
-          <span class="q-num">Tahap 2 — Padankan 5 pasangan</span>
-        </div>
-        <div class="q-text">${data.arahan}</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-          <div class="match-col-title">📌 Perkara</div>
-          <div class="match-col-title">✅ Fakta</div>
-        </div>
-        <div class="match-cols-wrap">
-          <div class="match-col" id="matchKiri">${kiriHtml}</div>
-          <div class="match-col" id="matchKanan">${kananHtml}</div>
-        </div>
-        <div class="match-progress" id="matchProgress">0 / 5 pasangan betul</div>
-      </div>`;
-
-    // No timer for matching — it's a drag-and-click game
-    const sb = document.getElementById('sTimer');
-    if (sb) sb.textContent = '∞';
-    const tb = document.getElementById('timerBar');
-    if (tb) tb.style.width = '100%';
-  },
-
-  matchClick(el) {
-    const side = el.dataset.side;
-    if (el.classList.contains('matched-correct') || el.classList.contains('disabled')) return;
-
-    if (side === 'kiri') {
-      // Deselect all kiri first
-      document.querySelectorAll('#matchKiri .match-item').forEach(e => e.classList.remove('selected'));
-      el.classList.add('selected');
-      this.matchSelected = { side: 'kiri', el, key: el.dataset.key };
-
-    } else if (side === 'kanan') {
-      if (!this.matchSelected) {
-        // Select kanan first — allow it
-        document.querySelectorAll('#matchKanan .match-item').forEach(e => e.classList.remove('selected'));
-        el.classList.add('selected');
-        this.matchSelected = { side: 'kanan', el, val: el.dataset.val };
-        return;
-      }
-
-      // We have a kiri selected — try pairing
-      if (this.matchSelected.side === 'kiri') {
-        const kiriKey = this.matchSelected.key;
-        const kananVal = el.dataset.val;
-        this.doMatch(this.matchSelected.el, el, kiriKey, kananVal);
-      }
-
-      // If kanan+kanan: switch selection
-      if (this.matchSelected.side === 'kanan') {
-        document.querySelectorAll('#matchKanan .match-item').forEach(e => e.classList.remove('selected'));
-        el.classList.add('selected');
-        this.matchSelected = { side: 'kanan', el, val: el.dataset.val };
-      }
-    } else {
-      // If kanan was selected first, now click kiri
-      if (this.matchSelected && this.matchSelected.side === 'kanan') {
-        const kiriKey  = el.dataset.key;
-        const kananVal = this.matchSelected.val;
-        this.doMatch(el, this.matchSelected.el, kiriKey, kananVal);
-      }
-    }
-  },
-
-  doMatch(kiriEl, kananEl, kiriKey, kananVal) {
-    this.matchAttempted++;
-    const betul = this.matchMap[kiriKey];
-    const isOk  = kananVal === betul;
-
-    kiriEl.classList.remove('selected');
-    kananEl.classList.remove('selected');
-    this.matchSelected = null;
-
-    if (isOk) {
-      kiriEl.classList.add('matched-correct');
-      kananEl.classList.add('matched-correct');
-      kiriEl.onclick = null; kananEl.onclick = null;
-      this.matchCorrect++;
-      this.stageMark[1] += 5;
-      const mp = document.getElementById('matchProgress');
-      if (mp) mp.textContent = `${this.matchCorrect} / 5 pasangan betul ✓`;
-
-      const sm = document.getElementById('sMarkah');
-      if (sm) sm.textContent = this.stageMark[1];
-
-      if (this.matchCorrect === 5) {
-        setTimeout(() => this.endStage2(), 900);
-      }
-    } else {
-      kiriEl.classList.add('matched-wrong');
-      kananEl.classList.add('matched-wrong');
-      setTimeout(() => {
-        kiriEl.classList.remove('matched-wrong');
-        kananEl.classList.remove('matched-wrong');
-      }, 800);
-    }
-  },
-
-  endStage2() {
-    this.showStageResult(2, this.stageMark[1]);
-  },
-
-  // ══════════════════════════════════════
-  //  TAHAP 3: SUSUN SEMULA (DRAG-DROP / TAP)
-  // ══════════════════════════════════════
-  renderSort() {
-    this.renderScoreBar();
-    this.currentQ = 0;
-    this.sortScore = 0;
-    this.renderSortQ();
-  },
-
-  renderSortQ() {
-    const q = SOALAN_T3[this.currentQ];
-    if (!q) { this.endStage3(); return; }
-
-    // Shuffle items for display
-    const displayed = this.shuffle(q.items.map((txt,i) => ({ txt, origIdx: i })));
-    this.sortCurrentDisplayed = displayed;
-    this.sortCurrentQ = q;
-
-    const itemsHtml = displayed.map((item, i) => `
-      <div class="sort-item" draggable="true" data-idx="${i}"
-           ondragstart="ENGINE.sortDragStart(event,${i})"
-           ondragover="ENGINE.sortDragOver(event,${i})"
-           ondrop="ENGINE.sortDrop(event,${i})"
-           ondragend="ENGINE.sortDragEnd(event)">
-        <div class="sort-handle"><span></span><span></span><span></span></div>
-        <div class="sort-item-num">${i+1}</div>
-        <div class="sort-item-text">${item.txt}</div>
-      </div>`).join('');
-
-    document.getElementById('gameArea').innerHTML = `
-      <div class="question-card">
-        <div class="q-meta">
-          <span class="q-badge sort">SUSUN SEMULA</span>
-          <span class="q-num">Soalan ${this.currentQ+1} / ${SOALAN_T3.length} — Tahap 3</span>
-        </div>
-        <div class="q-text">${q.arahan}</div>
-        <div class="sort-instruction">
-          📱 Sentuh &amp; seret item untuk susun semula • 🖥 Seret item ke kedudukan betul
-        </div>
-        <div class="sort-list" id="sortList">${itemsHtml}</div>
-        <button class="btn-semak" onclick="ENGINE.semakSort()">✅ Semak Jawapan</button>
-      </div>`;
-
-    // Store current order (by data-idx)
-    this.sortCurrentOrder = displayed.map((_,i) => i);
-
-    // Touch support for mobile drag-sort
-    this.initTouchSort();
-
-    const sb = document.getElementById('sTimer');
-    if (sb) sb.textContent = '∞';
-    const sm = document.getElementById('sSoalan');
-    if (sm) sm.textContent = `${this.currentQ+1}/${SOALAN_T3.length}`;
-  },
-
-  // Drag events
-  sortDragStart(e, idx) {
-    this.dragSrcIdx = idx;
-    e.target.classList.add('dragging');
-    e.dataTransfer.effectAllowed = 'move';
-  },
-  sortDragOver(e, idx) {
+  // Fungsi apabila butang 'Main Sekarang' ditekan
+  function mulaPermainan(e) {
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    document.querySelectorAll('.sort-item').forEach(el => el.classList.remove('drag-over'));
-    const items = document.querySelectorAll('.sort-item');
-    if (items[idx]) items[idx].classList.add('drag-over');
-  },
-  sortDrop(e, idx) {
-    e.preventDefault();
-    if (this.dragSrcIdx === null || this.dragSrcIdx === idx) return;
-    this.sortSwap(this.dragSrcIdx, idx);
-    this.dragSrcIdx = null;
-  },
-  sortDragEnd(e) {
-    document.querySelectorAll('.sort-item').forEach(el => {
-      el.classList.remove('dragging','drag-over');
-    });
-  },
+    const nama = document.getElementById('nama').value.trim().toUpperCase();
+    const kelas = document.getElementById('kelas').value.trim().toUpperCase();
 
-  sortSwap(a, b) {
-    const list = document.getElementById('sortList');
-    const items = [...list.querySelectorAll('.sort-item')];
-    const elA   = items[a];
-    const elB   = items[b];
-
-    // Swap data-idx attributes
-    const tmpIdx = elA.dataset.idx;
-    elA.dataset.idx = elB.dataset.idx;
-    elB.dataset.idx = tmpIdx;
-
-    // Swap onclick drag idx
-    elA.setAttribute('ondragstart', `ENGINE.sortDragStart(event,${b})`);
-    elA.setAttribute('ondragover',  `ENGINE.sortDragOver(event,${b})`);
-    elA.setAttribute('ondrop',      `ENGINE.sortDrop(event,${b})`);
-    elB.setAttribute('ondragstart', `ENGINE.sortDragStart(event,${a})`);
-    elB.setAttribute('ondragover',  `ENGINE.sortDragOver(event,${a})`);
-    elB.setAttribute('ondrop',      `ENGINE.sortDrop(event,${a})`);
-
-    // Swap num display
-    const numA = elA.querySelector('.sort-item-num');
-    const numB = elB.querySelector('.sort-item-num');
-    const tmpN = numA.textContent;
-    numA.textContent = numB.textContent;
-    numB.textContent = tmpN;
-
-    // DOM swap
-    if (a < b) {
-      list.insertBefore(elB, elA);
-    } else {
-      list.insertBefore(elA, elB);
-    }
-  },
-
-  // Touch drag for mobile
-  initTouchSort() {
-    const list = document.getElementById('sortList');
-    if (!list) return;
-    let touchSrc = null, touchClone = null, touchStartY = 0;
-
-    list.addEventListener('touchstart', e => {
-      const item = e.target.closest('.sort-item');
-      if (!item) return;
-      touchSrc = item;
-      touchStartY = e.touches[0].clientY;
-      item.style.opacity = '.5';
-    }, { passive: true });
-
-    list.addEventListener('touchmove', e => {
-      if (!touchSrc) return;
-      e.preventDefault();
-      const y = e.touches[0].clientY;
-      const items = [...list.querySelectorAll('.sort-item')];
-      items.forEach(el => el.classList.remove('drag-over'));
-      // Find target
-      const el = document.elementFromPoint(e.touches[0].clientX, y);
-      const target = el && el.closest('.sort-item');
-      if (target && target !== touchSrc) target.classList.add('drag-over');
-    }, { passive: false });
-
-    list.addEventListener('touchend', e => {
-      if (!touchSrc) return;
-      const y = e.changedTouches[0].clientY;
-      const el = document.elementFromPoint(e.changedTouches[0].clientX, y);
-      const target = el && el.closest('.sort-item');
-      const items  = [...list.querySelectorAll('.sort-item')];
-
-      if (target && target !== touchSrc) {
-        const a = items.indexOf(touchSrc);
-        const b = items.indexOf(target);
-        if (a !== -1 && b !== -1) this.sortSwap(a, b);
-      }
-
-      touchSrc.style.opacity = '';
-      touchSrc = null;
-      list.querySelectorAll('.sort-item').forEach(el => el.classList.remove('drag-over'));
-    }, { passive: true });
-  },
-
-  semakSort() {
-    const q     = this.sortCurrentQ;
-    const list  = document.getElementById('sortList');
-    const items = [...list.querySelectorAll('.sort-item')];
-
-    // Get current order of origIdx values
-    const currentOrder = items.map(el => {
-      const dispIdx = parseInt(el.dataset.idx);
-      return this.sortCurrentDisplayed[dispIdx] ? this.sortCurrentDisplayed[dispIdx].origIdx : 0;
+    // Sediakan parameter URL untuk dihantar ke game
+    const params = new URLSearchParams({
+      nama: nama,
+      kelas: kelas,
+      topikId: TOPIK_ID,
+      topikNama: 'Biodata Nabi Muhammad SAW',
+      subjek: 'Sirah'
     });
 
-    // Build correct order from jawapan
-    const correctOrder = q.jawapan;
-    let correct = 0;
+    // Buka game (Pastikan fail 'biodata-nabi.html' berada dalam folder/laluan yang betul)
+    // Berdasarkan kod game anda, ia mencari index di "../../index.html", bermakna game berada di dalam subfolder.
+    // Sesuaikan laluan (path) di bawah jika perlu:
+    window.location.href = 'biodata-nabi.html?' + params.toString();
+  }
 
-    items.forEach((el, i) => {
-      el.querySelector('button') && (el.querySelector('button').disabled = true);
-      const myOrigIdx = this.sortCurrentDisplayed[parseInt(el.dataset.idx)]?.origIdx;
-      const correctOrigIdx = correctOrder[i];
-      if (myOrigIdx === correctOrigIdx) {
-        el.classList.add('correct-pos');
-        correct++;
-      } else {
-        el.classList.add('wrong-pos');
-      }
-    });
+  // Fungsi memaparkan rekod dari localStorage
+  function paparRanking() {
+    const table = document.getElementById('rankingTable');
+    const body = document.getElementById('rankingBody');
+    const noData = document.getElementById('noDataMsg');
+    
+    // Ambil data berdasarkan key localstorage yang digunakan oleh game anda
+    const localDataKey = 'kafa_ranking_' + TOPIK_ID;
+    const dataData = JSON.parse(localStorage.getItem(localDataKey) || '[]');
 
-    // Score: 5 markah jika semua betul, 3 markah separuh betul
-    let markah = 0;
-    if (correct === 5) markah = 5;
-    else if (correct >= 3) markah = 3;
-    else if (correct >= 1) markah = 1;
+    // Susun markah tertinggi di atas sekali
+    dataData.sort((a, b) => b.markah - a.markah);
 
-    this.stageMark[2] += markah;
-    const sm = document.getElementById('sMarkah');
-    if (sm) sm.textContent = this.stageMark[2];
-
-    // Disable btn
-    const btn = document.querySelector('.btn-semak');
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = `✓ ${correct}/5 betul (+${markah} markah)`;
-    }
-
-    setTimeout(() => {
-      this.currentQ++;
-      const sq = document.getElementById('sSoalan');
-      if (sq) sq.textContent = `${this.currentQ+1}/${SOALAN_T3.length}`;
-      if (this.currentQ < SOALAN_T3.length) {
-        this.renderSortQ();
-      } else {
-        this.endStage3();
-      }
-    }, 2000);
-  },
-
-  endStage3() {
-    this.showFinalResult();
-  },
-
-  // ══════════════════════════════════════
-  //  TIMER (only for MCQ T1)
-  // ══════════════════════════════════════
-  startTimer(seconds) {
-    clearInterval(this.timerInterval);
-    this.timeLeft = seconds;
-    this.updateTimer();
-    this.timerInterval = setInterval(() => {
-      this.timeLeft--;
-      this.updateTimer();
-      if (this.timeLeft <= 0) {
-        clearInterval(this.timerInterval);
-        if (!this.answered) this.pilihMCQ(null);
-      }
-    }, 1000);
-  },
-
-  updateTimer() {
-    const el  = document.getElementById('timeDisp');
-    const bar = document.getElementById('timerBar');
-    const sb  = document.getElementById('sTimer');
-    const pct = (this.timeLeft / 20) * 100;
-    if (el) {
-      el.textContent = this.timeLeft;
-      el.className = 'time-left';
-      if (this.timeLeft <= 5)       el.classList.add('danger');
-      else if (this.timeLeft <= 10) el.classList.add('warning');
-    }
-    if (bar) {
-      bar.style.width = pct + '%';
-      if (this.timeLeft <= 5) bar.classList.add('warning');
-      else bar.classList.remove('warning');
-    }
-    if (sb) sb.textContent = this.timeLeft;
-  },
-
-  // ══════════════════════════════════════
-  //  HASIL TAHAP
-  // ══════════════════════════════════════
-  showStageResult(stage, mark) {
-    const maxMark = 25;
-    const pct = Math.round((mark / maxMark) * 100);
-    const emoji = pct >= 80 ? '🎉' : pct >= 50 ? '⭐' : '💡';
-    const msgs  = pct >= 80
-      ? 'Cemerlang! Anda menguasai tahap ini! 🚀'
-      : pct >= 50
-        ? 'Bagus! Teruskan usaha anda! 💪'
-        : 'Jangan putus asa. Belajar lebih lagi! 📚';
-
-    const stageLabel = stage === 1 ? 'Aneka Pilihan' : stage === 2 ? 'Padanan' : 'Susun Semula';
-
-    document.getElementById('gameArea').innerHTML = `
-      <div class="result-card">
-        <span class="result-emoji">${emoji}</span>
-        <div class="result-title">Tahap ${stage} Selesai!</div>
-        <div style="font-size:13px;color:var(--txt3);margin-bottom:8px">(${stageLabel})</div>
-        <div class="result-score">${mark} <span>/ 25</span></div>
-        <div class="result-detail">${msgs}</div>
-        <button class="btn-next" onclick="ENGINE.startStage(${stage+1})">
-          Teruskan ke Tahap ${stage+1} ▶
-        </button>
-      </div>`;
-
-    if (stage === 1) clearInterval(this.timerInterval);
-  },
-
-  showFinalResult() {
-    clearInterval(this.timerInterval);
-    const total = this.stageMark.reduce((a,b) => a+b, 0);
-    const stars = total >= 60 ? 3 : total >= 40 ? 2 : 1;
-    const starHtml = '⭐'.repeat(stars).split('').map((s,i) =>
-      `<span class="star-pop" style="animation-delay:${i*.12}s">${s}</span>`).join('');
-
-    const motivasi = [
-      "Jangan mudah putus asa. Setiap usaha ada nilainya! 💪",
-      "Bagus! Anda berjaya menamatkan semua tahap! 🌟",
-      "Luar Biasa! Anda Cemerlang! 🏆✨"
-    ];
-
-    // Show coffee btn
-    const cw = document.getElementById('coffeeWrap');
-    if (cw) cw.classList.remove('hidden');
-
-    document.getElementById('gameArea').innerHTML = `
-      <div class="result-card">
-        <span class="result-emoji">🏆</span>
-        <div class="stars-row">${starHtml}</div>
-        <div class="result-title">Tamat! Anda Berjaya!</div>
-        <div class="result-score">${total} <span>/ 75</span></div>
-        <div class="result-msg">${motivasi[stars-1]}</div>
-
-        <div class="total-breakdown">
-          <div class="breakdown-row">
-            <span class="br-label">Tahap 1 — MCQ (Aneka Pilihan)</span>
-            <span class="br-val">${this.stageMark[0]} / 25</span>
-          </div>
-          <div class="breakdown-row">
-            <span class="br-label">Tahap 2 — Padanan (Matching)</span>
-            <span class="br-val">${this.stageMark[1]} / 25</span>
-          </div>
-          <div class="breakdown-row">
-            <span class="br-label">Tahap 3 — Susun Semula (Ordering)</span>
-            <span class="br-val">${this.stageMark[2]} / 25</span>
-          </div>
-          <div class="breakdown-row">
-            <span class="br-label" style="font-weight:800;color:var(--txt)">Jumlah Markah</span>
-            <span class="br-val" style="font-size:1.15rem">${total} / 75</span>
-          </div>
-        </div>
-
-        <div class="attempt-info">Percubaan: ${this.attempts} / 3</div>
-
-        <div class="final-actions">
-          ${this.attempts < 3 ? `
-            <button class="btn-secondary" onclick="ENGINE.tryAgain()">
-              🔄 Cuba Semula (${this.attempts}/3 percubaan)
-            </button>` : ''}
-          <button class="btn-success" onclick="ENGINE.confirmSubmit(${total})">
-            ✅ Hantar Markah
-          </button>
-        </div>
-      </div>`;
-  },
-
-  // ══════════════════════════════════════
-  //  CUBA SEMULA, SUBMIT, LOCK
-  // ══════════════════════════════════════
-  tryAgain() {
-    if (this.attempts >= 3) {
-      alert('Maaf! Anda telah menggunakan semua 3 percubaan.');
+    if (dataData.length === 0) {
+      table.style.display = 'none';
+      noData.style.display = 'block';
       return;
     }
-    this.attempts = this.addAttempt();
-    this.stageMark = [0, 0, 0];
-    this.currentQ  = 0;
-    const cw = document.getElementById('coffeeWrap');
-    if (cw) cw.classList.add('hidden');
-    this.renderGameHeader();
-    this.startStage(1);
-  },
 
-  confirmSubmit(total) {
-    if (confirm(`Anda pasti ingin menghantar markah ${total}/75?\nSelepas ini, permainan tidak dapat diulang.`)) {
-      this.submitAndLock(total);
-    }
-  },
+    table.style.display = 'table';
+    noData.style.display = 'none';
+    body.innerHTML = '';
 
-  async submitAndLock(total) {
-    this.lockGame();
+    dataData.forEach((item, index) => {
+      const row = document.createElement('tr');
+      
+      // Penghias nombor ranking 1, 2, 3
+      let rankDisplay = index + 1;
+      if(index < 3) {
+        rankDisplay = `<span class="rank-badge rank-${index+1}">${index+1}</span>`;
+      }
 
-    const payload = {
-      nama:      this.userInfo.nama,
-      kelas:     this.userInfo.kelas,
-      markah:    total,
-      topikId:   this.userInfo.topikId,
-      topikNama: this.userInfo.topikNama,
-      subjek:    this.userInfo.subjek,
-      masa:      new Date().toLocaleDateString('ms-MY'),
-      stageMark: this.stageMark
-    };
-
-    // Save local
-    try {
-      const ld  = JSON.parse(localStorage.getItem('kafa_ranking_' + payload.topikId) || '[]');
-      const idx = ld.findIndex(d => d.nama === payload.nama && d.kelas === payload.kelas);
-      const entry = { nama: payload.nama, kelas: payload.kelas, markah: total, masa: payload.masa };
-      if (idx >= 0) { if (total > ld[idx].markah) ld[idx] = entry; }
-      else ld.push(entry);
-      localStorage.setItem('kafa_ranking_' + payload.topikId, JSON.stringify(ld));
-    } catch(e) {}
-
-    // Send to GAS
-    try {
-      await fetch(window.GAS_URL, {
-        method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-    } catch(e) {}
-
-    alert('✅ Markah anda telah dihantar! Tahniah!');
-    const params = new URLSearchParams({
-      nama: this.userInfo.nama,
-      kelas: this.userInfo.kelas,
-      tab: 'ranking',
-      subjek: this.userInfo.subjek,
-      topikId: this.userInfo.topikId
+      row.innerHTML = `
+        <td style="text-align: center;">${rankDisplay}</td>
+        <td>
+          <strong>${formatNama(item.nama)}</strong><br>
+          <span style="font-size: 0.8rem; color: var(--txt2);">${item.kelas}</span>
+        </td>
+        <td style="font-size: 0.8rem; color: var(--txt2);">${item.masa || '-'}</td>
+        <td><span class="score-val">${item.markah}</span> <span style="font-size:0.75rem; color:var(--txt2)">/ 75</span></td>
+      `;
+      body.appendChild(row);
     });
-    window.location.href = '../../index.html?' + params.toString();
-  },
-
-  showLockedScreen() {
-    const el = document.getElementById('gameArea');
-    if (el) el.innerHTML = `
-      <div class="result-card">
-        <span class="result-emoji">🔒</span>
-        <div class="result-title">Permainan Terkunci</div>
-        <div class="result-msg">Anda telah menggunakan semua 3 percubaan atau telah menghantar markah untuk topik ini.</div>
-        <a href="../../index.html" class="btn-next" style="text-decoration:none;display:inline-flex;margin-top:8px">← Kembali ke Dashboard</a>
-      </div>`;
-  },
-
-  // ── Helpers ──
-  getAttempts() {
-    return parseInt(localStorage.getItem(`kafa_attempts_${this.userInfo.nama}_${this.userInfo.topikId}`) || '0');
-  },
-  addAttempt() {
-    const n = this.getAttempts() + 1;
-    localStorage.setItem(`kafa_attempts_${this.userInfo.nama}_${this.userInfo.topikId}`, n);
-    return n;
-  },
-  lockGame() {
-    localStorage.setItem(`kafa_lock_${this.userInfo.nama}_${this.userInfo.topikId}`, 'locked');
-  },
-  shuffle(arr) {
-    for (let i = arr.length-1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i+1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  },
-  esc(s) { return String(s).replace(/'/g, "\\'").replace(/"/g, '&quot;'); },
-  fmtNama(n) {
-    return n.split(' ').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ');
-  },
-  showToast(msg) {
-    const t = document.getElementById('gameToast');
-    if (!t) return;
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
   }
-};
 
-// ── Start ──
-document.addEventListener('DOMContentLoaded', () => ENGINE.init());
+  // Mematikan data jika guru/pelajar ingin reset papan markah
+  function padamMarkah() {
+    if (confirm('Adakah anda pasti mahu memadam semua rekod markah dan cubaan dalam komputer/peranti ini?')) {
+      localStorage.removeItem('kafa_ranking_' + TOPIK_ID);
+      
+      // Padam juga data cubaan (attempts) supaya boleh main balik
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('kafa_attempts_') || key.startsWith('kafa_lock_')) {
+          localStorage.removeItem(key);
+          i--; 
+        }
+      }
+      paparRanking();
+      alert('Data berjaya dipadam!');
+    }
+  }
+
+  // Format tulisan nama (Ahmad Bin Ali)
+  function formatNama(str) {
+    return str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+  }
 </script>
+
 </body>
 </html>
