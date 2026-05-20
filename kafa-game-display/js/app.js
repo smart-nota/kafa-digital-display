@@ -3,7 +3,7 @@
 // ========================================
 
 // ── Google Apps Script URL (gantikan dengan URL anda) ──
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwbH1f0DlyZXOuapx6M-1TIezlgzlKTNw7pqFcG3RzKYyObuX2tRyB1kGpOzF1-hhmNdw/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbw_disZMS0UX6TN5hBVICgPouxEnmSU__DZlkb_Bl1IrQvx-wXGg9YSZsRh0o3ftsMAWg/exec';
 
 // ── State ──
 let currentUser = null; // { nama, kelas, gender }
