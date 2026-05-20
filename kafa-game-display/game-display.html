@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KAFA Game — Platform Pembelajaran Interaktif</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🌙</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+
+  <style>
+  /* ════════════════════════════════════════════
+      RESET & VARIABLES (Gabungan & Penyelarasan)
+  ════════════════════════════════════════════ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:            #06101f;
+    --bg2:           #091626;
+    --bg3:           #0c1e3a;
+    --surface:       #0d1e38;
+    --surface2:      #112240;
+    --surface3:      #162d52;
+    --border:        rgba(70,130,255,.10);
+    --border2:       rgba(70,130,255,.20);
+    --border3:       rgba(70,130,255,.36);
+    --gold:          #c9963a;
+    --gold2:         #e8b84b;
+    --gold3:         #f5cc72;
+    --gold-glow:     rgba(201,150,58,.30);
+    --gold-glow2:    rgba(201,150,58,.12);
+    --accent:        #3d7fff;
+    --accent2:       #6fa3ff;
+    --accent3:       #b0ccff;
+    --accent-glow:   rgba(61,127,255,.20);
+    --green:         #1ec97a;
+    --green-bg:      rgba(30,201,122,.12);
+    --red:           #ff4f4f;
+    --red-bg:        rgba(255,79,79,.12);
+    --yellow:        #f0b429;
+    --txt:           #ddeeff;
+    --txt2:          #7a9cc8;
+    --txt3:         #3e5f88;
+    --txt-inv:       #06101f;
+    --radius-sm:     10px;
+    --radius:        16px;
+    --radius-lg:     22px;
+    --radius-xl:     30px;
+    --font-display:  'Cormorant Garamond', serif;
+    --font-body:     'Plus Jakarta Sans', sans-serif;
+    --font-game:     'Baloo 2', sans-serif;
+    --header-h:      62px;
+    --max-w:         700px;
+    --shadow:        0 14px 50px rgba(0,0,0,.55);
+    --shadow-sm:     0 4px 18px rgba(0,0,0,.40);
+    --shadow-gold:   0 6px 30px var(--gold-glow);
+    --shadow-accent: 0 6px 28px var(--accent-glow);
+    --transition:    all .22s cubic-bezier(.4,0,.2,1);
+  }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--txt);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 95% 55% at 12% -8%,  rgba(61,127,255,.08)  0%, transparent 60%),
+      radial-gradient(ellipse 75% 50% at 90% 105%, rgba(201,150,58,.07)  0%, transparent 60%),
+      radial-gradient(ellipse 55% 40% at 55%  50%, rgba(14,32,62,.85)    0%, transparent 100%);
+  }
+
+  /* ════════════════════════════════════════════
+      HEADER
+  ════════════════════════════════════════════ */
+  #mainHeader {
+    position: sticky; top: 0; z-index: 100;
+    height: var(--header-h);
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 20px;
+    background: rgba(6,16,31,.90);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border2);
+  }
+
+  #mainHeader::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 25%, var(--gold3) 50%, var(--accent2) 72%, transparent 100%);
+    opacity: .65;
+  }
+
+  .header-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; flex: 1; min-width: 0;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--gold), var(--gold3));
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: var(--shadow-gold);
+    position: relative;
+  }
+
+  .header-logo > span {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 700;
+    color: var(--txt); letter-spacing: .07em; white-space: nowrap;
+  }
+
+  .header-logo em { font-style: italic; color: var(--gold2); margin-left: 5px; }
+
+  .btn-keluar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--txt2);
+    font-family: var(--font-body); font-size: 12.5px; font-weight: 600;
+    cursor: pointer; transition: all .2s; flex-shrink: 0;
+  }
+
+  .btn-keluar:hover {
+    border-color: rgba(255,79,79,.5);
+    color: var(--red); background: var(--red-bg);
+  }
+
+  /* ════════════════════════════════════════════
+      DASHBOARD / LOGIN SCREEN (Ubah kepada input bertulis)
+  ════════════════════════════════════════════ */
+  #loginScreen {
+    display: flex; align-items: center; justify-content: center;
+    min-height: calc(100vh - var(--header-h));
+    padding: 24px 16px;
+  }
+
+  .login-card {
+    width: 100%; max-width: 420px;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-xl);
+    padding: 44px 32px 36px;
+    box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.04);
+    position: relative; overflow: hidden;
+  }
+
+  .login-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--gold3), var(--accent2), transparent);
+  }
+
+  .login-logo { text-align: center; margin-bottom: 30px; }
+  .big-icon { font-size: 58px; margin-bottom: 10px; display: inline-block; filter: drop-shadow(0 6px 22px rgba(201,150,58,.5)); }
+  .login-logo h1 { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--txt); }
+  .login-logo h1 span { color: var(--gold2); font-style: italic; }
+  .login-logo p { font-size: 11px; color: var(--txt3); letter-spacing: .09em; text-transform: uppercase; font-weight: 600; }
+
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 11px; font-weight: 700; color: var(--txt2); letter-spacing: .10em; text-transform: uppercase; margin-bottom: 8px; }
+  
+  /* Input Tulis Nama Murid */
+  .form-group input[type="text"] {
+    width: 100%; padding: 13px 16px; background: var(--bg2); border: 1px solid var(--border2);
+    border-radius: var(--radius-sm); color: var(--txt); font-family: var(--font-body);
+    font-size: 14px; font-weight: 600; outline: none; transition: all .25s;
+  }
+  .form-group input[type="text"]:focus { border-color: var(--accent2); background: var(--bg3); box-shadow: 0 0 12px rgba(61,127,255,.15); }
+  
+  .form-group select {
+    width: 100%; padding: 13px 16px; background: var(--bg2); border: 1px solid var(--border2);
+    border-radius: var(--radius-sm); color: var(--txt); font-family: var(--font-body);
+    font-size: 14px; font-weight: 600; outline: none; cursor: pointer;
+  }
+
+  .btn-mula {
+    width: 100%; padding: 15px; background: linear-gradient(135deg, var(--gold), var(--gold3));
+    border: none; border-radius: var(--radius-sm); font-family: var(--font-body);
+    font-size: 14.5px; font-weight: 800; color: #06101f; cursor: pointer;
+    box-shadow: var(--shadow-gold); transition: all .25s; letter-spacing: .03em;
+  }
+  .btn-mula:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,150,58,.5); }
+
+  /* ════════════════════════════════════════════
+      LEADERBOARD PANEL & TOPIC CARD
+  ════════════════════════════════════════════ */
+  #dashboardContent { max-width: var(--max-w); margin: 0 auto; padding: 24px 16px; display: none; }
+  
+  .welcome-box { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
+  .welcome-box h3 { font-size: 18px; font-weight: 700; color: var(--txt); }
+  .welcome-box p { font-size: 13px; color: var(--txt2); margin-top: 2px; }
+
+  .topic-card {
+    background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg);
+    padding: 24px; position: relative; overflow: hidden; margin-bottom: 30px;
+    box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  }
+  .topic-card::after { content: ''; position: absolute; right: 0; bottom: 0; width: 120px; height: 120px; background: radial-gradient(circle, rgba(201,150,58,.08), transparent 70%); pointer-events: none; }
+  .topic-info h4 { font-family: var(--font-display); font-size: 24px; color: var(--gold3); margin-bottom: 4px; }
+  .topic-info p { font-size: 12.5px; color: var(--txt2); }
+  .btn-play-topic { padding: 12px 24px; background: linear-gradient(135deg, var(--accent), #1d62e0); border: none; border-radius: var(--radius-sm); color: #fff; font-family: var(--font-body); font-size: 13.5px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow-accent); transition: all .2s; }
+  .btn-play-topic:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(61,127,255,.4); }
+
+  /* Ranking Table Style */
+  .ranking-section { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow); }
+  .ranking-title-wrap { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+  .ranking-title-wrap h3 { font-family: var(--font-display); font-size: 22px; color: var(--txt); }
+  
+  .ranking-table-wrap { overflow-x: auto; }
+  .ranking-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13.5px; }
+  .ranking-table th { padding: 12px; color: var(--txt3); text-transform: uppercase; font-size: 11px; font-weight: 700; letter-spacing: .06em; border-bottom: 1px solid var(--border2); }
+  .ranking-table td { padding: 14px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .ranking-table tr.saya { background: rgba(61,127,255,.07); }
+  .ranking-table tr.saya td { border-bottom-color: rgba(61,127,255,.2); }
+  
+  .rank-num { display: inline-flex; width: 24px; height: 24px; border-radius: 6px; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; }
+  .rank-1 { background: rgba(201,150,58,.2); color: var(--gold3); border: 1px solid rgba(201,150,58,.4); }
+  .rank-2 { background: rgba(180,190,210,.15); color: #cbd5e1; border: 1px solid rgba(180,190,210,.3); }
+  .rank-3 { background: rgba(184,115,51,.15); color: #cd7f32; border: 1px solid rgba(184,115,51,.3); }
+  .rank-normal { background: var(--bg3); color: var(--txt2); }
+
+  /* ════════════════════════════════════════════
+      GAMEPLAY SCREEN (Diambil dari biodata-nabi.html)
+  ════════════════════════════════════════════ */
+  #gameplayScreen { display: none; }
+  
+  .game-topbar { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 18px; height: 58px; background: rgba(6,16,31,.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border2); }
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px; background: transparent; border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--txt2); font-family: var(--font-body); font-size: 12.5px; font-weight: 600; cursor: pointer; text-decoration: none; transition: var(--transition); }
+  .back-btn:hover { border-color: var(--accent2); color: var(--accent3); background: var(--accent-glow); }
+  
+  .game-info { flex: 1; min-width: 0; text-align: center; }
+  .game-info h2 { font-family: var(--font-game); font-size: 14px; font-weight: 800; color: var(--txt); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .game-info p { font-size: 10.5px; color: var(--txt3); font-weight: 500; margin-top: 1px; }
+
+  .stage-indicator { display: flex; gap: 6px; align-items: center; }
+  .stage-dot { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-game); font-size: 11px; font-weight: 800; border: 1.5px solid var(--border2); background: var(--bg3); color: var(--txt3); }
+  .stage-dot.active { border-color: var(--accent); background: var(--accent-glow); color: var(--accent2); animation: pulseDot 1.6s ease infinite; }
+  .stage-dot.done { border-color: var(--green); background: var(--green-bg); color: var(--green); }
+  @keyframes pulseDot { 0%,100% { box-shadow: 0 0 0 0 rgba(61,127,255,.4); } 60% { box-shadow: 0 0 0 7px rgba(61,127,255,0); } }
+
+  .score-bar { display: flex; align-items: center; background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 18px; }
+  .score-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .s-val { font-family: var(--font-game); font-size: 1.15rem; font-weight: 800; color: var(--txt); }
+  .s-label { font-size: 9.5px; color: var(--txt3); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; }
+  .score-divider { width: 1px; height: 32px; background: var(--border2); }
+
+  #gameArea { max-width: 640px; margin: 0 auto; padding: 18px 16px 32px; }
+  .timer-wrap { margin-bottom: 14px; }
+  .timer-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 11.5px; font-weight: 700; color: var(--txt3); }
+  .time-left { font-family: var(--font-game); font-size: 1rem; font-weight: 900; color: var(--accent2); }
+  .time-left.warning { color: var(--gold2); }
+  .time-left.danger  { color: var(--red); }
+  .timer-bar-bg { height: 6px; background: var(--bg3); border-radius: 99px; overflow: hidden; border: 1px solid var(--border); }
+  .timer-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--gold2)); width: 100%; }
+  .timer-bar-fill.warning { background: linear-gradient(90deg, var(--gold2), var(--red)); }
+
+  .question-card { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 22px 20px; margin-bottom: 14px; position: relative; overflow: hidden; }
+  .q-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .q-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+  .q-badge.mcq   { background: rgba(61,127,255,.15); color: var(--accent2); border: 1px solid rgba(61,127,255,.25); }
+  .q-badge.match { background: rgba(201,150,58,.15); color: var(--gold2); border: 1px solid rgba(201,150,58,.25); }
+  .q-badge.sort  { background: rgba(30,201,122,.15); color: var(--green); border: 1px solid rgba(30,201,122,.25); }
+  .q-text { font-family: var(--font-game); font-size: 1.05rem; font-weight: 700; color: var(--txt); line-height: 1.5; margin-bottom: 20px; }
+
+  /* MCQ GRID */
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .option-btn { padding: 14px 13px; background: var(--bg2); border: 1.5px solid var(--border2); border-radius: var(--radius-sm); font-family: var(--font-game); font-size: 13.5px; font-weight: 700; color: var(--txt2); cursor: pointer; transition: var(--transition); text-align: center; }
+  .option-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-glow); color: var(--txt); transform: translateY(-2px); }
+  .option-btn.correct { border-color: var(--green) !important; background: var(--green-bg) !important; color: var(--green) !important; }
+  .option-btn.wrong { border-color: var(--red) !important; background: var(--red-bg) !important; color: var(--red) !important; }
+  .option-letter { display: inline-flex; width: 20px; height: 20px; background: var(--surface3); color: var(--accent2); border-radius: 5px; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; margin-right: 6px; }
+
+  /* MATCHING SCREEN */
+  .match-cols-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+  .match-col-title { font-size: 10px; font-weight: 800; color: var(--txt3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; text-align: center; }
+  .match-item { padding: 12px 14px; background: var(--bg2); border: 1.5px solid var(--border2); border-radius: var(--radius-sm); font-family: var(--font-game); font-size: 13px; font-weight: 700; color: var(--txt2); cursor: pointer; transition: var(--transition); text-align: center; user-select: none; }
+  .match-item:hover { border-color: var(--accent2); color: var(--accent3); }
+  .match-item.selected { border-color: var(--gold); background: rgba(201,150,58,.12); color: var(--gold2); }
+  .match-item.matched-correct { border-color: var(--green) !important; background: var(--green-bg) !important; color: var(--green) !important; cursor: default; }
+  .match-item.disabled { opacity: .4; cursor: not-allowed; }
+
+  /* DRAG SORT SCREEN */
+  .sort-instruction { font-size: 12px; color: var(--txt3); font-weight: 600; margin-bottom: 12px; text-align: center; padding: 8px 14px; background: rgba(201,150,58,.07); border: 1px solid rgba(201,150,58,.2); border-radius: var(--radius-sm); }
+  .sort-list { display: flex; flex-direction: column; gap: 8px; }
+  .sort-item { display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: var(--bg2); border: 1.5px solid var(--border2); border-radius: var(--radius-sm); cursor: grab; transition: var(--transition); user-select: none; }
+  .sort-item.dragging { opacity: .5; border-color: var(--gold); }
+  .sort-item-num { width: 26px; height: 26px; background: var(--surface3); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: var(--font-game); font-size: 12px; font-weight: 800; color: var(--accent2); }
+  .sort-item-text { font-family: var(--font-game); font-size: 13px; font-weight: 700; color: var(--txt); flex: 1; }
+  .btn-semak { width: 100%; margin-top: 14px; padding: 14px; background: linear-gradient(135deg, var(--gold), var(--gold3)); border: none; border-radius: var(--radius-sm); font-family: var(--font-game); font-size: 15px; font-weight: 800; color: #06101f; cursor: pointer; box-shadow: var(--shadow-gold); transition: var(--transition); }
+  
+  /* RESULT SCREEN */
+  .result-card { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 36px 24px; text-align: center; }
+  .result-emoji { font-size: 56px; margin-bottom: 14px; display: block; }
+  .result-title { font-family: var(--font-game); font-size: 1.5rem; font-weight: 900; color: var(--txt); margin-bottom: 6px; }
+  .result-score { font-family: var(--font-game); font-size: 3rem; font-weight: 900; color: var(--gold2); margin: 12px 0; }
+  .result-msg { font-size: 13.5px; color: var(--txt2); line-height: 1.5; margin-bottom: 24px; }
+  .btn-next { display: inline-flex; align-items: center; justify-content: center; padding: 13px 28px; background: linear-gradient(135deg, var(--accent), #1d62e0); border: none; border-radius: var(--radius-sm); color: #fff; font-family: var(--font-game); font-size: 14px; font-weight: 800; cursor: pointer; text-decoration: none; box-shadow: var(--shadow-accent); transition: var(--transition); }
+  .btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--accent-glow); }
+
+  @media (max-width: 480px) {
+    .options-grid { grid-template-columns: 1fr; }
+    .match-cols-wrap { grid-template-columns: 1fr; gap: 20px; }
+  }
+  </style>
+</head>
+<body>
+
+  <header id="mainHeader">
+    <a href="#" class="header-logo" onclick="kembaliKeDashboard(event)">
+      <div class="logo-icon">🌙</div>
+      <span>GAME<em>KAFA</em></span>
+    </a>
+    <button class="btn-keluar" id="btnKeluar" style="display:none;" onclick="logKeluar()">
+      <span>Log Keluar</span>
+    </button>
+  </header>
+
+  <main>
+    <section id="loginScreen">
+      <div class="login-card">
+        <div class="login-logo">
+          <span class="big-icon">🕌</span>
+          <h1>Sira <span>KAFA</span></h1>
+          <p>Platform Pembelajaran Interaktif</p>
+        </div>
+        
+        <form id="loginForm" onsubmit="prosesLogMasuk(event)">
+          <div class="form-group">
+            <label for="inputNama">Nama Penuh Murid</label>
+            <input type="text" id="inputNama" placeholder="Sila tulis nama anda..." required autocomplete="off"/>
+          </div>
+          
+          <div class="form-group">
+            <label for="selectKelas">Pilih Kelas</label>
+            <select id="selectKelas" required>
+              <option value="" disabled selected>-- Pilih Kelas Anda --</option>
+              <option value="1 Al-Khawarizmi">1 Al-Khawarizmi</option>
+              <option value="2 Al-Ghazali">2 Al-Ghazali</option>
+              <option value="3 Ibn Sina">3 Ibn Sina</option>
+              <option value="4 Al-Biruni">4 Al-Biruni</option>
+              <option value="5 Ibn Khaldun">5 Ibn Khaldun</option>
+            </select>
+          </div>
+          
+          <button type="submit" class="btn-mula">Masuk Ke Dashboard</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="dashboardContent">
+      <div class="welcome-box">
+        <div>
+          <h3 id="welcomeNama">Assalamu'alaikum!</h3>
+          <p id="welcomeKelas">Kelas: -</p>
+        </div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-info">
+          <h4>Biodata Nabi Muhammad SAW</h4>
+          <p>Kuiz Interaktif Sira: Tahap 1 (MCQ), Tahap 2 (Suai Padan), Tahap 3 (Susun Atur)</p>
+        </div>
+        <button class="btn-play-topic" onclick="mulaPermainan()">Main Sekarang</button>
+      </div>
+
+      <div class="ranking-section">
+        <div class="ranking-title-wrap">
+          <h3>Papan Markah Terkini Murid</h3>
+        </div>
+        <div id="leaderboardContainer">
+          </div>
+      </div>
+    </section>
+
+    <section id="gameplayScreen">
+      <div class="game-topbar">
+        <button class="back-btn" onclick="kembaliKeDashboard(event)">← Dashboard</button>
+        <div class="game-info">
+          <h2 id="gameTitle">Biodata Nabi Muhammad SAW</h2>
+          <p id="gameSub">Tahap Kuiz Aktif</p>
+        </div>
+        <div class="stage-indicator">
+          <div class="stage-dot" id="dot1">1</div>
+          <div class="stage-dot" id="dot2">2</div>
+          <div class="stage-dot" id="dot3">3</div>
+        </div>
+      </div>
+
+      <div class="score-bar">
+        <div class="score-item">
+          <span class="s-val" id="valScore">0</span>
+          <span class="s-label">Markah</span>
+        </div>
+        <div class="score-divider"></div>
+        <div class="score-item">
+          <span class="s-val" id="valCombo">0</span>
+          <span class="s-label">Combo X</span>
+        </div>
+        <div class="score-divider"></div>
+        <div class="score-item">
+          <span class="s-val" id="valAttempts">- / 3</span>
+          <span class="s-label">Percubaan</span>
+        </div>
+      </div>
+
+      <div id="gameArea">
+        </div>
+    </section>
+  </main>
+
+  <script>
+  // --- DATA KANDUNGAN SOALAN PERMAINAN ---
+  const KANDUNGAN_KUIZ = {
+    topikId: "biodata_nabi",
+    tahap1: [
+      { q: "Di manakah tempat keputeraan Nabi Muhammad SAW?", a: ["Makkah Al-Mukarramah", "Madinah Al-Munawwarah", "Taif", "Syam"], c: 0 },
+      { q: "Siapakah nama bapa kepada Nabi Muhammad SAW?", a: ["Abdullah", "Abu Talib", "Abdul Mutalib", "Abu Lahab"], c: 0 },
+      { q: "Siapakah nama ibu kandung Nabi Muhammad SAW?", a: ["Aminah binti Wahab", "Halimah As-Sa'diyah", "Khadijah binti Khuwailid", "Fatmah"], c: 0 },
+      { q: "Nabi Muhammad SAW dilahirkan pada tarikh...?", a: ["12 Rabiulawal", "10 Muharram", "27 Rajab", "1 Syawal"], c: 0 },
+      { q: "Apakah gelaran yang diberikan kepada Nabi Muhammad SAW kerana sifat amanah baginda?", a: ["Al-Amin", "As-Siddiq", "Al-Faruq", "Zun Nurain"], c: 0 }
+    ],
+    tahap2: {
+      q: "Suaikan maklumat berikut berkaitan ahli keluarga dan penjaga Nabi Muhammad SAW dengan betul:",
+      items: [
+        { left: "Abdul Mutalib", right: "Datuk yang memelihara Nabi" },
+        { left: "Abu Talib", right: "Bapa saudara yang membela Nabi" },
+        { left: "Halimah As-Sa'diyah", right: "Ibu susuan Nabi dari perkampungan" },
+        { left: "Khadijah binti Khuwailid", right: "Isteri pertama Nabi Muhammad" }
+      ]
+    ],
+    tahap3: {
+      q: "Susun kronologi garis masa kehidupan Nabi Muhammad SAW bermula daripada awal mengikut urutan yang betul:",
+      items: [
+        { id: "k1", text: "Keputeraan Nabi Muhammad SAW pada Tahun Gajah" },
+        { id: "k2", text: "Dua tahun di bawah jagaan datuk baginda, Abdul Mutalib" },
+        { id: "k3", text: "Membesar bersama bapa saudara baginda, Abu Talib" },
+        { id: "k4", text: "Berkahwin dengan Saiditina Khadijah Al-Kubra" },
+        { id: "k5", text: "Menerima wahyu pertama di Gua Hira' pada usia 40 tahun" }
+      ]
+    }
+  };
+
+  // --- GLOBAL STATE ---
+  let currentUser = null;
+  let gameEngine = {
+    currentStage: 1,
+    currentQIdx: 0,
+    score: 0,
+    combo: 0,
+    totalQuestionsMark: 75, // Skor maksimum keseluruhan kuiz
+    timer: null,
+    timeLeft: 30,
+    selectedMatchLeft: null,
+    selectedMatchRight: null,
+    matchesDone: 0,
+    draggedItem: null
+  };
+
+  // --- SISTEM PEMULA & SESSION ---
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedUser = localStorage.getItem('kafa_current_user');
+    if (savedUser) {
+      currentUser = JSON.parse(savedUser);
+      tunjukDashboard();
+    } else {
+      tunjukLogMasuk();
+    }
+  });
+
+  function tunjukLogMasuk() {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('dashboardContent').style.display = 'none';
+    document.getElementById('gameplayScreen').style.display = 'none';
+    document.getElementById('btnKeluar').style.display = 'none';
+  }
+
+  function prosesLogMasuk(e) {
+    e.preventDefault();
+    const namaInput = document.getElementById('inputNama').value.trim();
+    const kelasSelect = document.getElementById('selectKelas').value;
+
+    if (!namaInput) return;
+
+    currentUser = {
+      nama: namaInput,
+      kelas: kelasSelect
+    };
+
+    localStorage.setItem('kafa_current_user', JSON.stringify(currentUser));
+    tunjukDashboard();
+  }
+
+  function logKeluar() {
+    localStorage.removeItem('kafa_current_user');
+    currentUser = null;
+    document.getElementById('inputNama').value = '';
+    document.getElementById('selectKelas').selectedIndex = 0;
+    tunjukLogMasuk();
+  }
+
+  function tunjukDashboard() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboardContent').style.display = 'block';
+    document.getElementById('gameplayScreen').style.display = 'none';
+    document.getElementById('btnKeluar').style.display = 'flex';
+
+    document.getElementById('welcomeNama').innerText = `Assalamu'alaikum, ${currentUser.nama}!`;
+    document.getElementById('welcomeKelas').innerText = `Kelas: ${currentUser.kelas}`;
+
+    binaPapanMarkah();
+  }
+
+  function kembaliKeDashboard(e) {
+    if(e) e.preventDefault();
+    clearInterval(gameEngine.timer);
+    tunjukDashboard();
+  }
+
+  // --- LOGIK PAPAN MARKAH (LOCALSTORAGE) ---
+  function simpanMarkahKeStorage(nama, kelas, markah) {
+    let semuaMarkah = JSON.parse(localStorage.getItem('kafa_leaderboard_records') || '[]');
+    
+    // Format rekod tarikh hari ini
+    const tarikhHariIni = new Date().toLocaleDateString('ms-MY', { day:'numeric', month:'short', year:'numeric' });
+
+    // Periksa jika murid yang sama dari kelas yang sama pernah menghantar skor
+    const rekodSediaAdaIdx = semuaMarkah.findIndex(r => r.nama.toLowerCase() === nama.toLowerCase() && r.kelas === kelas);
+
+    if (rekodSediaAdaIdx !== -1) {
+      // Kemas kini jika markah baharu lebih tinggi
+      if (markah > semuaMarkah[rekodSediaAdaIdx].markah) {
+        semuaMarkah[rekodSediaAdaIdx].markah = markah;
+        semuaMarkah[rekodSediaAdaIdx].masa = tarikhHariIni;
+      }
+    } else {
+      // Tambah rekod baharu jika tiada
+      semuaMarkah.push({ nama, kelas, markah, masa: tarikhHariIni });
+    }
+
+    localStorage.setItem('kafa_leaderboard_records', JSON.stringify(semuaMarkah));
+  }
+
+  function binaPapanMarkah() {
+    const container = document.getElementById('leaderboardContainer');
+    let semuaMarkah = JSON.parse(localStorage.getItem('kafa_leaderboard_records') || '[]');
+
+    // Susun kedudukan markah tertinggi dahulu
+    semuaMarkah.sort((a, b) => b.markah - a.markah);
+
+    if (semuaMarkah.length === 0) {
+      container.innerHTML = `<div style="text-align:center;color:var(--txt3);padding:20px;font-size:14px">Belum ada rekod markah dihantar. Jadilah yang pertama!</div>`;
+      return;
+    }
+
+    let rows = semuaMarkah.map((d, index) => {
+      const rank = index + 1;
+      let rankClass = 'rank-normal';
+      let medal = '';
+
+      if (rank === 1) { rankClass = 'rank-1'; medal = '🥇'; }
+      else if (rank === 2) { rankClass = 'rank-2'; medal = '🥈'; }
+      else if (rank === 3) { rankClass = 'rank-3'; medal = '🥉'; }
+
+      const isSaya = d.nama.toLowerCase() === currentUser.nama.toLowerCase() && d.kelas === currentUser.kelas;
+
+      return `<tr class="${isSaya ? 'saya' : ''}">
+        <td><span class="rank-num ${rankClass}">${rank}</span> ${medal}</td>
+        <td style="color:var(--txt);font-weight:${isSaya ? '800' : '500'}">
+          ${d.nama} ${isSaya ? ' <span style="font-size:10px;color:var(--accent2)">(Anda)</span>' : ''}
+        </td>
+        <td>${d.kelas}</td>
+        <td style="color:var(--txt);font-weight:800">${d.markah} <span style="color:var(--txt3);font-size:11px;font-weight:500">/ 75</span></td>
+        <td style="font-size:12px">${d.masa || '-'}</td>
+      </tr>`;
+    }).join('');
+
+    container.innerHTML = `<div class="ranking-table-wrap">
+      <table class="ranking-table">
+        <thead>
+          <tr><th>#</th><th>Nama</th><th>Kelas</th><th>Markah</th><th>Tarikh</th></tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  }
+
+  // --- LOGIK UTAMA PERMAINAN (ENGINE KUIZ) ---
+  function getAttempts() {
+    return parseInt(localStorage.getItem(`kafa_attempts_${currentUser.nama}_biodata_nabi`) || '0');
+  }
+
+  function addAttempt() {
+    const n = getAttempts() + 1;
+    localStorage.setItem(`kafa_attempts_${currentUser.nama}_biodata_nabi`, n);
+    return n;
+  }
+
+  function lockGame() {
+    localStorage.setItem(`kafa_lock_${currentUser.nama}_biodata_nabi`, 'locked');
+  }
+
+  function isLocked() {
+    return localStorage.getItem(`kafa_lock_${currentUser.nama}_biodata_nabi`) === 'locked';
+  }
+
+  function shuffle(arr) {
+    let array = [...arr];
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function mulaPermainan() {
+    const cubaan = getAttempts();
+    if (isLocked() || cubaan >= 3) {
+      document.getElementById('dashboardContent').style.display = 'none';
+      document.getElementById('gameplayScreen').style.display = 'block';
+      document.getElementById('valAttempts').innerText = `${cubaan} / 3`;
+      
+      // Papar status terkunci terus ke gameArea
+      document.getElementById('gameArea').innerHTML = `
+        <div class="result-card" style="margin-top:20px;">
+          <span class="result-emoji">🔒</span>
+          <div class="result-title">Permainan Terkunci</div>
+          <div class="result-msg">Anda telah menggunakan semua 3 percubaan atau telah menghantar markah maksimum untuk topik ini.</div>
+          <button class="btn-next" onclick="kembaliKeDashboard(null)">← Kembali ke Dashboard</button>
+        </div>`;
+      return;
+    }
+
+    // Set State Kuiz Baru
+    gameEngine.currentStage = 1;
+    gameEngine.currentQIdx = 0;
+    gameEngine.score = 0;
+    gameEngine.combo = 0;
+    
+    const cubaanBaru = addAttempt();
+
+    document.getElementById('dashboardContent').style.display = 'none';
+    document.getElementById('gameplayScreen').style.display = 'block';
+    
+    kemasKiniBarSkor(cubaanBaru);
+    muatTahap();
+  }
+
+  function kemasKiniBarSkor(cubaan) {
+    const c = cubaan || getAttempts();
+    document.getElementById('valScore').innerText = gameEngine.score;
+    document.getElementById('valCombo').innerText = gameEngine.combo;
+    document.getElementById('valAttempts').innerText = `${c} / 3`;
+    
+    // Tukar dot aktif tahap
+    for (let i = 1; i <= 3; i++) {
+      const dot = document.getElementById(`dot${i}`);
+      dot.className = 'stage-dot';
+      if (i < gameEngine.currentStage) dot.classList.add('done');
+      else if (i === gameEngine.currentStage) dot.classList.add('active');
+    }
+  }
+
+  function muatTahap() {
+    clearInterval(gameEngine.timer);
+    kemasKiniBarSkor();
+
+    if (gameEngine.currentStage === 1) {
+      document.getElementById('gameSub').innerText = "Tahap 1: Pilihan Ganda (MCQ)";
+      binaTahap1MCQ();
+    } else if (gameEngine.currentStage === 2) {
+      document.getElementById('gameSub').innerText = "Tahap 2: Suai Padan Bijak";
+      binaTahap2Match();
+    } else if (gameEngine.currentStage === 3) {
+      document.getElementById('gameSub').innerText = "Tahap 3: Susun Urutan Kronologi";
+      binaTahap3Sort();
+    } else {
+      tamatSemuaTahap();
+    }
+  }
+
+  // --- TAHAP 1: MCQ LOGIK ---
+  function binaTahap1MCQ() {
+    const qData = KANDUNGAN_KUIZ.tahap1[gameEngine.currentQIdx];
+    const container = document.getElementById('gameArea');
+
+    // Bina senarai pilihan jawapan bersama indeks asal untuk semakan alternatif cecair
+    let htmlOptions = qData.a.map((opt, idx) => {
+      let letter = String.fromCharCode(65 + idx); // A, B, C, D
+      return `<button class="option-btn" onclick="semakJawapanMCQ(this, ${idx}, ${qData.c})">
+        <span class="option-letter">${letter}</span> ${opt}
+      </button>`;
+    }).join('');
+
+    container.innerHTML = `
+      <div class="timer-wrap">
+        <div class="timer-label"><span>Masa Menjawab:</span><span id="timerText" class="time-left">30s</span></div>
+        <div class="timer-bar-bg"><div id="timerFill" class="timer-bar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="question-card">
+        <div class="q-meta"><span class="q-badge mcq">Tahap 1</span><span class="q-num">Soalan ${gameEngine.currentQIdx + 1} daripada ${KANDUNGAN_KUIZ.tahap1.length}</span></div>
+        <div class="q-text">${qData.q}</div>
+        <div class="options-grid">${htmlOptions}</div>
+      </div>`;
+
+    mulaPemasa(30, () => {
+      // Timeout Action
+      gameEngine.combo = 0;
+      bawaKeSoalanMCQSeterusnya();
+    });
+  }
+
+  function semakJawapanMCQ(btn, idxPilihan, idxBetul) {
+    clearInterval(gameEngine.timer);
+    const semuaBtn = document.querySelectorAll('.option-btn');
+    semuaBtn.forEach(b => b.disabled = true);
+
+    if (idxPilihan === idxBetul) {
+      btn.classList.add('correct');
+      gameEngine.combo++;
+      // Pemberian markah: 5 markah asas + bonus combo
+      let bonus = Math.min(gameEngine.combo, 5);
+      gameEngine.score += (5 + bonus);
+    } else {
+      btn.classList.add('wrong');
+      semuaBtn[idxBetul].classList.add('correct');
+      gameEngine.combo = 0;
+    }
+
+    document.getElementById('valScore').innerText = gameEngine.score;
+    document.getElementById('valCombo').innerText = gameEngine.combo;
+
+    setTimeout(bawaKeSoalanMCQSeterusnya, 1200);
+  }
+
+  function bawaKeSoalanMCQSeterusnya() {
+    gameEngine.currentQIdx++;
+    if (gameEngine.currentQIdx < KANDUNGAN_KUIZ.tahap1.length) {
+      binaTahap1MCQ();
+    } else {
+      tunjukkanSkrinAntaraTahap(1, "Tahap 1 Selesai!", "Sedia untuk cabaran Suai Padan di Tahap 2?", () => {
+        gameEngine.currentStage = 2;
+        gameEngine.currentQIdx = 0;
+        muatTahap();
+      });
+    }
+  }
+
+  // --- TAHAP 2: SUAI PADAN LOGIK ---
+  function binaTahap2Match() {
+    const container = document.getElementById('gameArea');
+    const t2Data = KANDUNGAN_KUIZ.tahap2;
+
+    gameEngine.matchesDone = 0;
+    gameEngine.selectedMatchLeft = null;
+    gameEngine.selectedMatchRight = null;
+
+    // Larikan aturan kedudukan (Shuffle) kiri dan kanan berasingan
+    const leftItems = shuffle(t2Data.items.map(item => item.left));
+    const rightItems = shuffle(t2Data.items.map(item => item.right));
+
+    let leftHtml = leftItems.map((txt, idx) => `<div class="match-item" data-side="left" data-val="${txt}" id="m-left-${idx}" onclick="pilihItemPadan(this)">${txt}</div>`).join('');
+    let rightHtml = rightItems.map((txt, idx) => `<div class="match-item" data-side="right" data-val="${txt}" id="m-right-${idx}" onclick="pilihItemPadan(this)">${txt}</div>`).join('');
+
+    container.innerHTML = `
+      <div class="timer-wrap">
+        <div class="timer-label"><span>Selesaikan Padanan:</span><span id="timerText" class="time-left">45s</span></div>
+        <div class="timer-bar-bg"><div id="timerFill" class="timer-bar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="question-card">
+        <div class="q-meta"><span class="q-badge match">Tahap 2</span></div>
+        <div class="q-text">${t2Data.q}</div>
+        
+        <div class="match-cols-wrap">
+          <div class="match-col"><div class="match-col-title">Penjaga / Ahli Keluarga</div>${leftHtml}</div>
+          <div class="match-col"><div class="match-col-title">Hubungan / Peranan</div>${rightHtml}</div>
+        </div>
+        <div class="match-progress" id="matchProgTxt">Selesaikan semua 4 padanan.</div>
+      </div>`;
+
+    mulaPemasa(45, () => {
+      // Kehabisan masa tahap 2
+      bawaKeSeterusnyaTahap2();
+    });
+  }
+
+  function pilihItemPadan(el) {
+    const side = el.getAttribute('data-side');
+    if (el.classList.contains('matched-correct') || el.classList.contains('disabled')) return;
+
+    if (side === 'left') {
+      document.querySelectorAll('.match-item[data-side="left"]').forEach(i => i.classList.remove('selected'));
+      el.classList.add('selected');
+      gameEngine.selectedMatchLeft = el;
+    } else {
+      document.querySelectorAll('.match-item[data-side="right"]').forEach(i => i.classList.remove('selected'));
+      el.classList.add('selected');
+      gameEngine.selectedMatchRight = el;
+    }
+
+    // Semak jika kedua-dua bahagian telah dipilih murid
+    if (gameEngine.selectedMatchLeft && gameEngine.selectedMatchRight) {
+      const valLeft = gameEngine.selectedMatchLeft.getAttribute('data-val');
+      const valRight = gameEngine.selectedMatchRight.getAttribute('data-val');
+
+      // Cari kebenaran padanan dalam KANDUNGAN_KUIZ
+      const padananBetul = KANDUNGAN_KUIZ.tahap2.items.some(i => i.left === valLeft && i.right === valRight);
+
+      const itemL = gameEngine.selectedMatchLeft;
+      const itemR = gameEngine.selectedMatchRight;
+
+      if (padananBetul) {
+        itemL.className = 'match-item matched-correct';
+        itemR.className = 'match-item matched-correct';
+        gameEngine.score += 5; // 5 Markah setiap suai padan betul
+        gameEngine.matchesDone++;
+        document.getElementById('valScore').innerText = gameEngine.score;
+      } else {
+        itemL.classList.remove('selected');
+        itemR.classList.remove('selected');
+        // Efek amaran salah seketika
+        itemL.style.borderColor = 'var(--red)';
+        itemR.style.borderColor = 'var(--red)';
+        setTimeout(() => {
+          if(!itemL.classList.contains('matched-correct')) itemL.style.borderColor = 'var(--border2)';
+          if(!itemR.classList.contains('matched-correct')) itemR.style.borderColor = 'var(--border2)';
+        }, 500);
+      }
+
+      gameEngine.selectedMatchLeft = null;
+      gameEngine.selectedMatchRight = null;
+      document.getElementById('matchProgTxt').innerText = `Berjaya memadankan: ${gameEngine.matchesDone} / 4`;
+
+      if (gameEngine.matchesDone === 4) {
+        clearInterval(gameEngine.timer);
+        setTimeout(bawaKeSeterusnyaTahap2, 1000);
+      }
+    }
+  }
+
+  function bawaKeSeterusnyaTahap2() {
+    tunjukkanSkrinAntaraTahap(2, "Tahap 2 Selesai!", "Sedia untuk menyusun urutan kronologi sejarah di Tahap 3?", () => {
+      gameEngine.currentStage = 3;
+      muatTahap();
+    });
+  }
+
+  // --- TAHAP 3: SUSUN ATUR KRONOLOGI LOGIK (DRAG & DROP) ---
+  function binaTahap3Sort() {
+    const container = document.getElementById('gameArea');
+    const t3Data = KANDUNGAN_KUIZ.tahap3;
+
+    // Rawakkan barisan sebelum dipaparkan
+    const shuffledItems = shuffle(t3Data.items);
+
+    let sortHtml = shuffledItems.map((item, idx) => `
+      <div class="sort-item" draggable="true" data-id="${item.id}" id="sort-${idx}" 
+           ondragstart="handleDragStart(event)" 
+           ondragover="handleDragOver(event)" 
+           ondragleave="handleDragLeave(event)"
+           ondrop="handleDrop(event)">
+        <div class="sort-handle"><span></span><span></span><span></span></div>
+        <div class="sort-item-num">${idx + 1}</div>
+        <div class="sort-item-text">${item.text}</div>
+      </div>
+    `).join('');
+
+    container.innerHTML = `
+      <div class="timer-wrap">
+        <div class="timer-label"><span>Susun Kronologi:</span><span id="timerText" class="time-left">60s</span></div>
+        <div class="timer-bar-bg"><div id="timerFill" class="timer-bar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="question-card">
+        <div class="q-meta"><span class="q-badge sort">Tahap 3</span></div>
+        <div class="q-text">${t3Data.q}</div>
+        <div class="sort-instruction">Sentuh & heret (drag) kotak di bawah untuk menukar kedudukan urutan sejarah yang betul.</div>
+        <div class="sort-list" id="sortableList">${sortHtml}</div>
+        <button class="btn-semak" onclick="semakUrutanKronologi()">Semak & Hantar Jawapan</button>
+      </div>`;
+
+    mulaPemasa(60, () => {
+      // Auto semak jika masa tamat
+      semakUrutanKronologi();
+    });
+  }
+
+  // Drag & Drop Handlers
+  function handleDragStart(e) {
+    gameEngine.draggedItem = e.currentTarget;
+    e.dataTransfer.effectAllowed = 'move';
+    e.currentTarget.classList.add('dragging');
+  }
+
+  function handleDragOver(e) {
+    if (e.preventDefault) e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
+    return false;
+  }
+
+  function handleDragLeave(e) {
+    e.currentTarget.classList.remove('drag-over');
+  }
+
+  function handleDrop(e) {
+    if (e.stopPropagation) e.stopPropagation();
+    e.currentTarget.classList.remove('drag-over');
+    
+    const targetItem = e.currentTarget;
+    const list = document.getElementById('sortableList');
+    
+    if (gameEngine.draggedItem !== targetItem) {
+      // Ambil susunan semua elemen anak semasa
+      let items = [...list.querySelectorAll('.sort-item')];
+      const srcIdx = items.indexOf(gameEngine.draggedItem);
+      const destIdx = items.indexOf(targetItem);
+      
+      // Tukar kedudukan dalam DOM list
+      if (srcIdx < destIdx) {
+        targetItem.parentNode.insertBefore(gameEngine.draggedItem, targetItem.nextSibling);
+      } else {
+        targetItem.parentNode.insertBefore(gameEngine.draggedItem, targetItem);
+      }
+      
+      // Kemas kini semula nombor index urutan visual (1-5)
+      items = [...list.querySelectorAll('.sort-item')];
+      items.forEach((item, index) => {
+        item.querySelector('.sort-item-num').innerText = index + 1;
+      });
+    }
+    
+    gameEngine.draggedItem.classList.remove('dragging');
+    return false;
+  }
+
+  function semakUrutanKronologi() {
+    clearInterval(gameEngine.timer);
+    document.querySelector('.btn-semak').disabled = true;
+
+    const listItems = document.querySelectorAll('.sort-item');
+    const susunanBetul = KANDUNGAN_KUIZ.tahap3.items;
+    let markahTahap3 = 0;
+
+    listItems.forEach((item, idx) => {
+      item.setAttribute('draggable', 'false');
+      const idItem = item.getAttribute('data-id');
+
+      // Bandingkan ID item pada kedudukan indeks semasa murid dengan susunan skema asal
+      if (idItem === susunanBetul[idx].id) {
+        item.className = 'sort-item correct-pos';
+        markahTahap3 += 6; // 6 Markah bagi setiap kedudukan urutan kronologi yang betul (Max: 30)
+      } else {
+        item.className = 'sort-item wrong-pos';
+      }
+    });
+
+    gameEngine.score += markahTahap3;
+    document.getElementById('valScore').innerText = gameEngine.score;
+
+    setTimeout(() => {
+      gameEngine.currentStage = 4; // Tamat
+      muatTahap();
+    }, 2000);
+  }
+
+  // --- PEMASA GLOBAL (TIMER) ---
+  function mulaPemasa(saat, callbackTamat) {
+    gameEngine.timeLeft = saat;
+    const txt = document.getElementById('timerText');
+    const fill = document.getElementById('timerFill');
+    
+    txt.innerText = `${gameEngine.timeLeft}s`;
+    txt.className = "time-left";
+    fill.style.width = "100%";
+    fill.className = "timer-bar-fill";
+
+    gameEngine.timer = setInterval(() => {
+      gameEngine.timeLeft--;
+      txt.innerText = `${gameEngine.timeLeft}s`;
+      
+      let peratus = (gameEngine.timeLeft / saat) * 100;
+      fill.style.width = `${peratus}%`;
+
+      if (gameEngine.timeLeft <= 10 && gameEngine.timeLeft > 5) {
+        txt.className = "time-left warning";
+        fill.className = "timer-bar-fill warning";
+      } else if (gameEngine.timeLeft <= 5) {
+        txt.className = "time-left danger";
+      }
+
+      if (gameEngine.timeLeft <= 0) {
+        clearInterval(gameEngine.timer);
+        callbackTamat();
+      }
+    }, 1000);
+  }
+
+  // --- SKRIN PEMANDU ANTARA TAHAP ---
+  function tunjukkanSkrinAntaraTahap(tahapSelesai, tajuk, mesej, aksiSeterusnya) {
+    const container = document.getElementById('gameArea');
+    container.innerHTML = `
+      <div class="result-card">
+        <span class="result-emoji">🎉</span>
+        <div class="result-title">${tajuk}</div>
+        <div class="result-msg">${mesej}</div>
+        <button class="btn-next" id="btnNextStage">Teruskan Cabaran →</button>
+      </div>`;
+    
+    document.getElementById('btnNextStage').onclick = aksiSeterusnya;
+  }
+
+  // --- SKRIN KEPUTUSAN AKHIR & SIMPAN MARKAH ---
+  function tamatSemuaTahap() {
+    clearInterval(gameEngine.timer);
+    const container = document.getElementById('gameArea');
+    
+    // Simpan keputusan murid secara rasmi ke dalam papan markah localStorage
+    simpanMarkahKeStorage(currentUser.nama, currentUser.kelas, gameEngine.score);
+
+    let emoji = "⭐️";
+    let ulasan = "Usaha yang baik! Cuba lagi untuk skor penuh.";
+
+    if (gameEngine.score >= 65) {
+      emoji = "🏆";
+      ulasan = "Mumtaz! Anda seorang pakar sejarah sirah Nabi Muhammad SAW!";
+      lockGame(); // Kunci kekal jika skor cemerlang maksimum dicapai
+    } else if (gameEngine.score >= 40) {
+      emoji = "👍";
+      ulasan = "Jayyid Jiddan! Pencapaian yang sangat membanggakan.";
+    }
+
+    container.innerHTML = `
+      <div class="result-card">
+        <span class="result-emoji">${emoji}</span>
+        <div class="result-title">Kuiz Selesai Syabas!</div>
+        <div class="result-msg">${ulasan} Markah anda telah selamat direkodkan ke dalam Papan Kedudukan Murid.</div>
+        <div class="s-label">Jumlah Skor Keseluruhan</div>
+        <div class="result-score">${gameEngine.score} <span style="font-size:20px;color:var(--txt3)">/ 75</span></div>
+        <button class="btn-next" onclick="kembaliKeDashboard(null)">← Kembali Ke Dashboard</button>
+      </div>`;
+  }
+  </script>
+</body>
+</html>
